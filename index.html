@@ -1,0 +1,1337 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vocal Coach</title>
+<meta name="theme-color" content="#0e1420">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<style>:root{--bg:#0e1420;--card:#172033;--card2:#1e2a42;--tx:#e8edf6;--mu:#93a0b8;--ac:#f2b84b;--ac2:#ffd98a;--ok:#34c38f;--wn:#f5b73d;--or:#f0795a;--bl:#5b9bff;--vi:#a78bfa;--bd:#2a3750;--r:16px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+#app{max-width:640px;margin:0 auto;min-height:100vh;padding:14px 14px calc(88px + env(safe-area-inset-bottom))}
+h1{font-size:1.45rem;margin:.2rem 0 .1rem}h2{font-size:1.1rem;margin:1.1rem 0 .5rem}h3{font-size:1rem;margin:.2rem 0}
+p{margin:.3rem 0}.mu{color:var(--mu)}.sm{font-size:.86rem}.tc{text-align:center}.row{display:flex;gap:8px;align-items:center}.sp{justify-content:space-between}.wrap{flex-wrap:wrap}.g8{gap:8px}.mt{margin-top:10px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin:10px 0}
+.card.click{cursor:pointer}.card.click:active{background:var(--card2)}
+.btn{appearance:none;border:0;border-radius:999px;padding:11px 18px;font:600 .95rem system-ui;background:var(--card2);color:var(--tx);cursor:pointer;border:1px solid var(--bd)}
+.btn.pri{background:var(--ac);color:#241a00;border-color:var(--ac)}.btn.big{width:100%;padding:15px;font-size:1.05rem}.btn.sm{padding:7px 12px;font-size:.82rem}.btn.dn{color:var(--or)}
+.btn:disabled{opacity:.45}
+.chip{display:inline-block;padding:6px 12px;border-radius:999px;border:1px solid var(--bd);background:transparent;color:var(--mu);font:600 .84rem system-ui;cursor:pointer;margin:0 6px 6px 0}
+.chip.on{background:var(--ac);border-color:var(--ac);color:#241a00}.chip.v2.on{background:var(--bl);border-color:var(--bl);color:#04122b}.chip.v3.on{background:var(--vi);border-color:var(--vi);color:#160a3a}
+.badge{display:inline-block;font-size:.74rem;padding:2px 9px;border-radius:999px;background:var(--card2);color:var(--mu);margin:0 5px 4px 0}
+.badge.ok{color:var(--ok)}.badge.wn{color:var(--wn)}.badge.or{color:var(--or)}
+input,select,textarea{width:100%;background:#0b1220;color:var(--tx);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;font:inherit}
+textarea{min-height:150px;font-family:ui-monospace,Menlo,monospace;font-size:.88rem}
+label{display:block;font-size:.82rem;color:var(--mu);margin:10px 0 4px}
+input[type=range]{padding:0;accent-color:var(--ac)}input[type=checkbox]{width:auto}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:#0b1220ee;backdrop-filter:blur(10px);border-top:1px solid var(--bd);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+.tabs button{flex:1;max-width:128px;background:none;border:0;color:var(--mu);padding:9px 2px 8px;font:600 .72rem system-ui;cursor:pointer}
+.tabs button b{display:block;font-size:1.25rem;line-height:1.1}.tabs button.on{color:var(--ac)}
+canvas.roll{width:100%;height:240px;background:#0b1220;border:1px solid var(--bd);border-radius:var(--r);display:block;touch-action:pan-y}
+.banner{font-size:1.15rem;font-weight:700;text-align:center;min-height:1.7em;margin-top:8px;color:var(--ac2)}
+.lyric{text-align:center;color:var(--tx);min-height:1.5em;font-size:1.02rem}
+.now{display:flex;align-items:center;gap:12px;margin:8px 0}.now .nn{font-size:1.9rem;font-weight:800;min-width:3.4ch;text-align:center}
+.meter{flex:1;height:14px;background:#0b1220;border:1px solid var(--bd);border-radius:999px;position:relative;overflow:hidden}
+.meter::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--mu);opacity:.5}
+.meter i{position:absolute;top:2px;bottom:2px;width:10px;margin-left:-5px;border-radius:50%;background:var(--mu);left:50%;transition:left .08s}
+.now .nc{min-width:7ch;text-align:right;font-size:.85rem;color:var(--mu)}
+.bar{height:8px;border-radius:99px;background:#0b1220;overflow:hidden}.bar>i{display:block;height:100%;background:var(--ok)}
+.stat{flex:1;text-align:center;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:12px 6px}.stat b{display:block;font-size:1.5rem}
+.fb p{margin:.5rem 0}.fb p::before{content:"\266A  ";color:var(--ac)}
+.step{display:flex;gap:10px;align-items:flex-start}.step .num{background:var(--ac);color:#241a00;border-radius:50%;min-width:26px;height:26px;text-align:center;font-weight:800;line-height:26px;font-size:.85rem}
+.hdr{display:flex;align-items:center;gap:8px;margin-bottom:6px}.back{background:none;border:0;color:var(--ac);font:600 1rem system-ui;padding:6px 8px 6px 0;cursor:pointer}
+.tr{border-left:3px solid var(--ac);padding:2px 0 2px 10px;margin:8px 0}
+.err{color:var(--or);font-size:.88rem;margin-top:6px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom));background:#fff;color:#111;padding:10px 16px;border-radius:12px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20;max-width:90%}
+#toast.show{opacity:1}
+audio{width:100%;margin-top:6px}
+.hl{background:var(--card2);border-radius:12px;padding:8px 10px;margin:6px 0}
+.msg{max-width:92%;padding:10px 12px;border-radius:16px;margin:8px 0;font-size:.95rem}
+.msg.u{background:var(--ac);color:#241a00;margin-left:auto;border-bottom-right-radius:4px}
+.msg.a{background:var(--card);border:1px solid var(--bd);border-bottom-left-radius:4px}
+details summary{cursor:pointer;font-weight:600}
+</style></head>
+<body><div id="app"><main id="main"></main></div>
+<nav class="tabs"><button data-act="tab" data-t="home"><b>⌂</b>Home</button><button data-act="tab" data-t="train"><b>♪</b>Train</button><button data-act="tab" data-t="songs"><b>♫</b>Songs</button><button data-act="tab" data-t="sets"><b>☰</b>Sets</button><button data-act="tab" data-t="coach"><b>✦</b>Coach</button><button data-act="tab" data-t="progress"><b>↗</b>Progress</button></nav>
+<div id="toast"></div>
+<script>
+/* ===== CORE: pure music + scoring logic (unit-tested in Node) ===== */
+const NOTE_NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const KEYS=['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+const KEY_PC={C:0,'C#':1,Db:1,D:2,'D#':3,Eb:3,E:4,F:5,'F#':6,Gb:6,G:7,'G#':8,Ab:8,A:9,'A#':10,Bb:10,B:11};
+const MAJ=[0,2,4,5,7,9,11];
+const SOLFA={d:1,r:2,m:3,f:4,s:5,l:6,t:7};
+const mtof=m=>440*Math.pow(2,(m-69)/12);
+const ftom=f=>69+12*Math.log2(f/440);
+const mod12=n=>((n%12)+12)%12;
+const midiName=m=>{m=Math.round(m);return NOTE_NAMES[mod12(m)]+(Math.floor(m/12)-1)};
+const pcName=pc=>KEYS[mod12(pc)];
+const foldCents=c=>(((c+600)%1200)+1200)%1200-600;
+const centsOff=(midiSung,target)=>foldCents((midiSung-target)*100);
+const tolFor=lv=>[55,45,35,30,25][Math.max(1,Math.min(5,Math.round(lv||1)))-1];
+function median(a){if(!a.length)return null;const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2}
+function mean(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:0}
+
+/* --- pitch detection (YIN) --- */
+function detectPitch(buf,sr,thr){
+  thr=thr||0.15;
+  const N=buf.length,W=N>>1;let e=0;
+  for(let i=0;i<N;i++)e+=buf[i]*buf[i];
+  const rms=Math.sqrt(e/N);
+  if(rms<0.008)return null;
+  const maxTau=Math.min(W-1,Math.floor(sr/70)),minTau=Math.max(2,Math.floor(sr/1100));
+  const d=new Float32Array(maxTau+2);
+  for(let tau=1;tau<=maxTau;tau++){let s=0;for(let i=0;i<W;i++){const x=buf[i]-buf[i+tau];s+=x*x}d[tau]=s}
+  let run=0;d[0]=1;
+  for(let tau=1;tau<=maxTau;tau++){run+=d[tau];d[tau]=run?d[tau]*tau/run:1}
+  let tau=-1;
+  for(let t=minTau;t<=maxTau;t++){if(d[t]<thr){while(t+1<=maxTau&&d[t+1]<d[t])t++;tau=t;break}}
+  if(tau<0)return{freq:0,clarity:0,rms};
+  let x=tau;
+  if(tau>1&&tau<maxTau){const a=d[tau-1],b=d[tau],c=d[tau+1],den=a-2*b+c;if(den)x=tau+0.5*(a-c)/den}
+  return{freq:sr/x,clarity:1-d[tau],rms};
+}
+
+/* --- notation: numbers 1-7 or solfa d r m f s l t; 0=rest; , low octave; ' high octave; #/b accidental; :beats --- */
+function parseNotation(str){
+  const out=[];if(!str||!str.trim())return out;
+  for(const tok of str.trim().split(/\s+/)){
+    const m=/^([#b]?)([0-7]|[drmfslt])([,']*)(?::(\d+(?:\.\d+)?))?$/i.exec(tok);
+    if(!m)throw new Error('Can’t read “'+tok+'”');
+    const beats=m[4]?parseFloat(m[4]):1;
+    if(!(beats>0))throw new Error('Beats must be above 0 in “'+tok+'”');
+    const raw=m[2].toLowerCase();const deg=SOLFA[raw]||parseInt(raw,10);
+    if(deg===0){out.push({semi:null,beats});continue}
+    const oct=(m[3].match(/'/g)||[]).length-(m[3].match(/,/g)||[]).length;
+    out.push({semi:MAJ[deg-1]+(m[1]==='#'?1:m[1]==='b'?-1:0)+12*oct,beats});
+  }
+  return out;
+}
+
+/* --- chords & harmony --- */
+const CHORDS=[{n:'I',r:0,pcs:[0,4,7]},{n:'IV',r:5,pcs:[5,9,0]},{n:'V',r:7,pcs:[7,11,2]},{n:'vi',r:9,pcs:[9,0,4]},{n:'ii',r:2,pcs:[2,5,9]},{n:'iii',r:4,pcs:[4,7,11]}];
+function chordsFor(v1,bpb,total){
+  const out=[];let prev=CHORDS[0];
+  for(let b=0;b*bpb<total-1e-9;b++){
+    const s0=b*bpb,e0=s0+bpb;let best=null,bw=0;
+    CHORDS.forEach((c,ci)=>{
+      let w=0;
+      v1.forEach(ev=>{if(ev.semi==null)return;
+        const ov=Math.max(0,Math.min(e0,ev.s+ev.d)-Math.max(s0,ev.s));if(!ov)return;
+        const pc=mod12(ev.semi);let k=c.pcs.indexOf(pc);if(k<0)return;
+        w+=ov*(k===0?1.15:1)*(Math.abs(ev.s-s0)<1e-9?1.4:1)});
+      w-=ci*0.001;if(w>bw){bw=w;best=c}});
+    if(!best)best=prev;prev=best;out.push({s:s0,d:bpb,chord:best});
+  }
+  return out;
+}
+function chordAt(chords,beat,bpb){return chords[Math.max(0,Math.min(chords.length-1,Math.floor(beat/bpb+1e-9)))].chord}
+function chordToneBelow(semi,pcs){for(let d=1;d<=12;d++){const x=semi-d;if(pcs.includes(mod12(x)))return x}return semi-12}
+function buildSong(song){
+  const bpb=song.meter||4;let off=0;const lines=[],v1=[],v2=[],v3=[],c2=[],c3=[],has2=[],has3=[];
+  const pushEvs=(arr,str,start,li)=>{let t=start;parseNotation(str).forEach(e=>{arr.push({s:t,d:e.beats,semi:e.semi,line:li});t+=e.beats})};
+  song.lines.forEach((ln,i)=>{
+    const evs=parseNotation(ln.v1);const len=evs.reduce((a,e)=>a+e.beats,0);
+    pushEvs(v1,ln.v1,off,i);
+    const a=ln.v2&&ln.v2.trim(),b=ln.v3&&ln.v3.trim();
+    has2[i]=!!a;has3[i]=!!b;
+    if(a)pushEvs(c2,ln.v2,off,i);if(b)pushEvs(c3,ln.v3,off,i);
+    lines.push({start:off,len,lyric:ln.lyric||''});off+=len;
+  });
+  const total=off,chords=chordsFor(v1,bpb,total);
+  v1.forEach(ev=>{
+    if(ev.semi==null){v2.push({...ev});v3.push({...ev});return}
+    const pcs=chordAt(chords,ev.s,bpb).pcs;
+    const a=chordToneBelow(ev.semi,pcs),b=chordToneBelow(a,pcs);
+    if(!has2[ev.line])v2.push({...ev,semi:a});
+    if(!has3[ev.line])v3.push({...ev,semi:b});
+  });
+  c2.forEach(e=>v2.push(e));c3.forEach(e=>v3.push(e));
+  v2.sort((x,y)=>x.s-y.s);v3.sort((x,y)=>x.s-y.s);
+  const nr=v1.filter(e=>e.semi!=null);
+  return{bpb,lines,total,chords,parts:{v1,v2,v3},firstSemi:nr.length?nr[0].semi:0,lastSemi:nr.length?nr[nr.length-1].semi:0};
+}
+function keyBase(key,transpose){return 60+mod12((KEY_PC[key]||0)+(transpose||0))}
+function fitShift(midis,range){
+  if(!midis.length||!range||range.lo==null)return 0;
+  const c=(range.lo+range.hi)/2;return 12*Math.round((c-median(midis))/12);
+}
+function songTimeline(model,o){
+  const base=keyBase(o.key,o.transpose),beatSec=60/(o.bpm*(o.tempoMul||1));
+  const a=o.lineFrom||0,b=o.lineTo==null?model.lines.length-1:o.lineTo;
+  const startBeat=model.lines[a].start,endBeat=model.lines[b].start+model.lines[b].len;
+  const singMidis=model.parts[o.sing].filter(e=>e.semi!=null).map(e=>base+e.semi);
+  const shift=fitShift(singMidis,o.range||{})+12*(o.oct||0);
+  const events=[];
+  ['v1','v2','v3'].forEach(v=>model.parts[v].forEach(e=>{
+    if(e.semi==null||e.s<startBeat-1e-9||e.s>=endBeat-1e-9)return;
+    events.push({t:(e.s-startBeat)*beatSec,d:e.d*beatSec,midi:base+e.semi+shift,voice:v,line:e.line,
+      scored:v===o.sing,audible:!!(o.hear&&o.hear[v])});
+  }));
+  events.sort((x,y)=>x.t-y.t);
+  const chords=[];
+  model.chords.forEach(c=>{
+    if(c.s<startBeat-1e-9||c.s>=endBeat-1e-9)return;
+    chords.push({t:(c.s-startBeat)*beatSec,d:c.d*beatSec,tones:chordVoicing(c.chord,base+shift)});
+  });
+  const clicks=[];
+  for(let k=0;startBeat+k<endBeat-1e-9;k++)clicks.push({t:k*beatSec,strong:(startBeat+k)%model.bpb===0});
+  const lineMarks=[];
+  for(let i=a;i<=b;i++)lineMarks.push({idx:i,t:(model.lines[i].start-startBeat)*beatSec,end:(model.lines[i].start+model.lines[i].len-startBeat)*beatSec,lyric:model.lines[i].lyric});
+  return{events,chords,clicks,lineMarks,dur:(endBeat-startBeat)*beatSec,beatSec,shift,base,bpb:model.bpb};
+}
+function chordVoicing(chord,baseMidi){
+  const pcs=chord.pcs.map((p,i)=>i&&p<chord.pcs[0]?p+12:p);
+  let tones=pcs.map(p=>baseMidi+p-12);
+  while(Math.max(...tones)>64)tones=tones.map(t=>t-12);
+  while(Math.min(...tones)<45)tones=tones.map(t=>t+12);
+  let bass=baseMidi+chord.r-24;while(bass>52)bass-=12;while(bass<36)bass+=12;
+  return{tones,bass};
+}
+
+/* --- analysis --- */
+function analyzePart(events,range){
+  const nr=events.filter(e=>e.semi!=null&&e.midi!=null);
+  const out=[],leaps=[];
+  nr.forEach((e,i)=>{
+    if(range&&range.lo!=null&&(e.midi<range.lo-0.5||e.midi>range.hi+0.5))out.push({line:e.line,midi:e.midi});
+    if(i&&Math.abs(e.midi-nr[i-1].midi)>=7&&e.line===nr[i-1].line)leaps.push({line:e.line,from:nr[i-1].midi,to:e.midi});
+  });
+  const ms=nr.map(e=>e.midi);
+  return{outOfRange:out,leaps,lowest:ms.length?Math.min(...ms):null,highest:ms.length?Math.max(...ms):null,span:ms.length?Math.max(...ms)-Math.min(...ms):0};
+}
+function suggestShift(model,key,partName,range){
+  if(!range||range.lo==null)return 0;
+  const semis=model.parts[partName].filter(e=>e.semi!=null).map(e=>e.semi);
+  let best=0,bc=1e9;
+  for(let t=-6;t<=5;t++){
+    const base=keyBase(key,t);
+    for(let k=-3;k<=3;k++){
+      const c=semis.filter(s=>{const m=base+s+12*k;return m<range.lo-0.5||m>range.hi+0.5}).length;
+      const score=c*100+Math.abs(t);
+      if(score<bc){bc=score;best=t}
+    }
+  }
+  return best;
+}
+function songDifficulty(model,key,transpose,partName,range){
+  const base=keyBase(key,transpose);
+  const evs=model.parts[partName].map(e=>({...e,midi:e.semi==null?null:base+e.semi}));
+  const ms=evs.filter(e=>e.midi!=null).map(e=>e.midi);
+  const shift=fitShift(ms,range||{});
+  const fitted=evs.map(e=>e.midi==null?e:{...e,midi:e.midi+shift});
+  const an=analyzePart(fitted,range);
+  const score=an.outOfRange.length*3+an.leaps.length*2+(an.span>12?3:0);
+  return{...an,score,level:score<=2?'Easy':score<=8?'Moderate':'Challenging'};
+}
+
+/* --- transitions --- */
+const REL={0:['Same key','easy'],1:['Half step up','medium'],2:['Whole step up — a classic lift','easy'],3:['Minor third up','medium'],4:['Major third up','medium'],5:['Up a fourth — closely related','easy'],6:['Tritone away — distant keys','tricky'],7:['Up a fifth — closely related','easy'],8:['Down a major third','medium'],9:['Down a minor third','medium'],10:['Down a whole step','easy'],11:['Down a half step','medium']};
+function transitionAdvice(a,b){
+  const d=mod12(b.pc-a.pc),rel=REL[d],bpmDiff=b.bpm-a.bpm;
+  const tempo=Math.abs(bpmDiff)<=8?'Tempos are close — keep the groove going and flow straight in.'
+    :bpmDiff>0?'Next song is faster — build energy through the last chorus, then count in at the new tempo.'
+    :'Next song is slower — ease the last line, hold the final note and let the band settle before the new count-in.';
+  const gap=Math.min(mod12(a.endPc-b.startPc),mod12(b.startPc-a.endPc));
+  const V=pcName(b.pc+7);
+  let method,cue;
+  if(gap===0){method='Sustain the closing note ('+pcName(a.endPc)+') — it is also the opening note of the next song, so voices can slide straight in.';cue='Hold '+pcName(a.endPc)+' → enter';}
+  else if(gap<=2){method='The closing note ('+pcName(a.endPc)+') sits a step from the next opening note ('+pcName(b.startPc)+'). Hold it, then step across.';cue='Hold '+pcName(a.endPc)+' → step to '+pcName(b.startPc);}
+  else{method='Use a short instrumental bridge on the '+V+' chord (1–2 bars) to reset the ear before the new entry on '+pcName(b.startPc)+'.';cue='Bridge on '+V+' chord → enter on '+pcName(b.startPc);}
+  let level=rel[1];
+  if(Math.abs(bpmDiff)>25&&level==='easy')level='medium';
+  if(gap>2&&level==='medium'&&d!==0)level='medium';
+  return{keyNote:rel[0],tempoNote:tempo,method,cue,level,keyDistance:d,bridgeChord:V};
+}
+const THEMES=['Thanksgiving','Adoration','Surrender','Intimacy','Reverence'];
+function suggestOrder(items,theme){
+  const t=(theme||'').toLowerCase();
+  const match=s=>(s.theme||'').toLowerCase()===t?1:0;
+  const calm=['surrender','intimacy','reverence'].includes(t);
+  return [...items].sort((a,b)=>{
+    if(calm&&match(a)!==match(b))return match(a)-match(b);
+    return b.bpm-a.bpm;
+  });
+}
+
+/* --- scoring --- */
+const FPS=25;
+function scoreEvents(events,frames,tol){
+  const res=[];
+  events.filter(e=>e.scored).forEach(e=>{
+    const t0=e.t+Math.min(0.3,e.d*0.25),t1=e.t+e.d;
+    const inWin=frames.filter(f=>f.t>=t0&&f.t<t1);
+    const voiced=inWin.filter(f=>f.midi!=null);
+    const expected=Math.max(1,Math.floor((t1-t0)*FPS*0.8));
+    if(voiced.length<Math.max(2,expected*0.3)){res.push({ev:e,missed:true});return}
+    const cents=voiced.map(f=>centsOff(f.midi,e.midi));
+    const ok=cents.filter(c=>Math.abs(c)<=tol).length/cents.length;
+    const m=median(cents),sd=Math.sqrt(mean(cents.map(c=>(c-mean(cents))**2)));
+    res.push({ev:e,missed:false,inTune:ok,medianCents:m,wobble:sd});
+  });
+  return res;
+}
+function summarize(res){
+  const att=res.filter(r=>!r.missed);
+  const accuracy=att.length?Math.round(100*mean(att.map(r=>r.inTune))):0;
+  const coverage=res.length?att.length/res.length:0;
+  const tendency=att.length?median(att.map(r=>r.medianCents)):0;
+  const wobble=att.length?mean(att.map(r=>r.wobble)):0;
+  const weak=[...att].filter(r=>r.inTune<0.6).sort((a,b)=>a.inTune-b.inTune).slice(0,3);
+  const byLine={};att.forEach(r=>{const l=r.ev.line;if(l==null)return;(byLine[l]=byLine[l]||[]).push(r.inTune)});
+  const lineAcc=Object.keys(byLine).map(k=>({line:+k,acc:Math.round(100*mean(byLine[k]))}));
+  return{accuracy,coverage,tendency,wobble,weak,lineAcc,total:res.length,attempted:att.length};
+}
+function coachFeedback(s,ctx){
+  ctx=ctx||{};const out=[];
+  if(!s.total){return['Nothing to score in this run — press Start and sing along when you’re ready.']}
+  if(s.coverage<0.5)out.push('I could only hear you on about '+Math.round(s.coverage*100)+'% of the notes. Try singing a little closer to the mic, and it is fine to hum first — a gentle “mm” is a great start.');
+  if(s.attempted){
+    if(s.accuracy>=85)out.push('Lovely — your pitch was steady and secure. Next step: try it in a new key or at a faster tempo.');
+    else if(s.accuracy>=70)out.push('Good work — most notes landed well. A couple of spots need another pass; loop them once or twice.');
+    else if(s.accuracy>=50)out.push('You are getting there — many notes were close. Slow the tempo, keep the guide tone on, and listen before each entry.');
+    else out.push('This one is tricky, and that is completely normal. Loop just the first phrase, slow it down, and keep the guide tone on until it feels familiar.');
+    if(s.tendency>20)out.push('You leaned a little sharp (about '+Math.round(s.tendency)+' cents). Relax the jaw and tongue, and think “open and down” rather than pushing up to the note.');
+    else if(s.tendency<-20)out.push('You leaned a little flat (about '+Math.round(-s.tendency)+' cents). Keep the breath flowing and imagine the note slightly above where it feels comfortable.');
+    else if(s.attempted>2)out.push('Your pitch centre is nicely balanced — not leaning flat or sharp.');
+    if(s.weak.length)out.push('Notes to revisit: '+s.weak.map(r=>midiName(r.ev.midi)).filter((v,i,a)=>a.indexOf(v)===i).join(', ')+'.');
+    if(ctx.edge)out.push('Some of those notes sit at the edge of your comfortable range. Never force them — try a nearby key that sits more comfortably.');
+  }
+  return out;
+}
+function nextLevel(level,accs){
+  const last=accs.slice(-3);
+  if(last.length>=3&&last.every(a=>a>=80))return Math.min(5,level+1);
+  if(last.length>=2&&last.every(a=>a<45))return Math.max(1,level-1);
+  return level;
+}
+function voiceHint(lo,hi){
+  const c=(lo+hi)/2;
+  const n=c<54.5?'bass':c<58.5?'baritone':c<62.5?'tenor':c<67?'alto':c<70?'mezzo-soprano':'soprano';
+  return n;
+}
+
+/* --- reading the tune out of a recording --- */
+function decimateMono(chs,factor){
+  const n=Math.floor(chs[0].length/factor),out=new Float32Array(n);
+  for(let i=0;i<n;i++){let s=0;for(let c=0;c<chs.length;c++){const ch=chs[c];for(let k=0;k<factor;k++)s+=ch[i*factor+k]}out[i]=s/(factor*chs.length)}
+  return out;
+}
+function analyzeFrames(mono,sr,from,count,hop,N){
+  const frames=[];
+  for(let k=0;k<count;k++){
+    const p=(from+k)*hop;if(p+N>mono.length)break;
+    const r=detectPitch(mono.subarray(p,p+N),sr,0.2),t=(p+N/2)/sr;
+    if(r&&r.clarity>=0.75&&r.freq>0)frames.push({t,midi:ftom(r.freq),energy:true});
+    else frames.push({t,midi:null,energy:!!r});
+  }
+  return frames;
+}
+function framesToNotes(frames,hop){
+  const sm=frames.map((f,i)=>{
+    if(f.midi==null)return null;const w=[];
+    for(let k=-2;k<=2;k++){const g=frames[i+k];if(g&&g.midi!=null&&Math.abs(g.midi-f.midi)<2)w.push(g.midi)}
+    return w.length>=2?median(w):null;
+  });
+  const notes=[];let cur=null;
+  const close=()=>{if(cur&&cur.ms.length>=3)notes.push({t:cur.t0-hop/2,d:cur.t1-cur.t0+hop,midi:median(cur.ms)});cur=null};
+  frames.forEach((f,i)=>{
+    const m=sm[i];
+    if(m==null){if(cur&&f.t-cur.tl>2.5*hop)close();return}
+    if(cur&&Math.abs(m-median(cur.ms))<0.65&&f.t-cur.tl<=2.5*hop){cur.ms.push(m);cur.t1=f.t;cur.tl=f.t}
+    else{close();cur={t0:f.t,t1:f.t,tl:f.t,ms:[m]}}
+  });
+  close();
+  return notes.filter(n=>n.d>=0.16).map(n=>({t:Math.max(0,n.t),d:n.d,midi:Math.round(n.midi*100)/100}));
+}
+function melodyConfidence(frames){const e=frames.filter(f=>f.energy);return e.length?e.filter(f=>f.midi!=null).length/e.length:0}
+const KMAJ=[6.35,2.23,3.48,2.33,4.38,4.09,2.52,5.19,2.39,3.66,2.29,2.88],KMIN=[6.33,2.68,3.52,5.38,2.60,3.53,2.54,4.75,3.98,2.69,3.34,3.17];
+function estimateKey(notes){
+  const h=new Array(12).fill(0);notes.forEach(n=>{h[mod12(Math.round(n.midi))]+=n.d});
+  const corr=(a,b)=>{const ma=mean(a),mb=mean(b);let n=0,da=0,db=0;for(let i=0;i<12;i++){n+=(a[i]-ma)*(b[i]-mb);da+=(a[i]-ma)**2;db+=(b[i]-mb)**2}return da&&db?n/Math.sqrt(da*db):0};
+  let best={r:-2};
+  for(let k=0;k<12;k++){
+    const rot=p=>p.map((_,i)=>p[mod12(i-k)]);
+    const a=corr(h,rot(KMAJ)),b=corr(h,rot(KMIN));
+    if(a>best.r)best={r:a,pc:k,mode:'major'};if(b>best.r)best={r:b,pc:k,mode:'minor'};
+  }
+  return{pc:best.pc,mode:best.mode,name:pcName(best.pc)+' '+best.mode,strength:best.r};
+}
+function melodyRange(notes){
+  const ms=notes.map(n=>n.midi).sort((a,b)=>a-b);if(!ms.length)return{lo:0,hi:0};
+  return{lo:Math.round(ms[Math.floor(ms.length*0.05)]),hi:Math.round(ms[Math.min(ms.length-1,Math.floor(ms.length*0.95))])};
+}
+
+/* --- coach: guidance built from the singer's own data --- */
+const EXNAMES={warmup:'Gentle Warm-up',sustain:'Steady Notes',echo:'Echo Notes',arp:'Arpeggios',intervals:'Interval Training',harmony:'Harmony Hold'};
+function coachStats(ctx){
+  const all=ctx.sessions||[],now=ctx.now||Date.now(),last=all.slice(-6),prev=all.slice(-12,-6);
+  const tends=last.filter(s=>s.tend!=null).map(s=>s.tend);
+  const by={};all.forEach(s=>{if(EXNAMES[s.ref])(by[s.ref]=by[s.ref]||[]).push(s.acc)});
+  const ex=Object.keys(by).map(id=>({id,avg:mean(by[id].slice(-3)),n:by[id].length}));
+  const real=ex.filter(e=>e.id!=='warmup').sort((a,b)=>a.avg-b.avg);
+  return{n:all.length,recent:last.length?mean(last.map(s=>s.acc)):null,prev:prev.length?mean(prev.map(s=>s.acc)):null,
+    tend:tends.length>=2?median(tends):null,cov:last.length?mean(last.map(s=>s.cov==null?100:s.cov)):null,
+    daysSince:all.length?Math.floor((now-all[all.length-1].t)/864e5):null,weakest:real[0]||null,strongest:real.length?real[real.length-1]:null,
+    untried:Object.keys(EXNAMES).filter(id=>id!=='warmup'&&!by[id]),streak:ctx.streak||0};
+}
+function coachInsights(ctx){
+  const st=coachStats(ctx),out=[],p=ctx.profile||{};
+  if(p.lo==null)out.push({text:'Let’s start by finding your comfortable range — it takes about three minutes and lets me fit every exercise and song to your voice.',go:'assess',label:'Find my range'});
+  if(!st.n){out.push({text:'Welcome! Begin with a gentle warm-up. Five relaxed minutes is a great start; there is no pressure to be perfect.',go:'exercise',id:'warmup',label:'Start warm-up'});return out}
+  if(st.daysSince>=3)out.push({text:'It has been '+st.daysSince+' days since your last session. Even a five-minute warm-up keeps your voice ready — no need to catch up, just begin gently.',go:'exercise',id:'warmup',label:'Quick warm-up'});
+  if(st.tend!=null&&st.tend>20)out.push({text:'Your recent sessions lean a little sharp (about '+Math.round(st.tend)+' cents). That usually comes from tension — let the jaw drop, soften the tongue, and think “open and down”. Steady Notes is a good place to practise it.',go:'exercise',id:'sustain',label:'Steady Notes'});
+  else if(st.tend!=null&&st.tend<-20)out.push({text:'Your recent sessions lean a little flat (about '+Math.round(-st.tend)+' cents). Keep the breath flowing, stand tall, and imagine the note slightly higher. Echo Notes will help your ear lock on.',go:'exercise',id:'echo',label:'Echo Notes'});
+  if(st.cov!=null&&st.cov<60)out.push({text:'I only heard you on about '+Math.round(st.cov)+'% of notes lately. Try singing a little closer to the mic and a touch louder — a soft hum is a fine way to begin.'});
+  if(st.weakest&&st.weakest.avg<60)out.push({text:EXNAMES[st.weakest.id]+' is your toughest area right now ('+Math.round(st.weakest.avg)+'%). Slow it down and keep the guide tone on — progress here comes quickly with short, regular practice.',go:'exercise',id:st.weakest.id,label:'Practise it'});
+  else if(st.untried.length&&st.n>=2)out.push({text:'You have not tried '+EXNAMES[st.untried[0]]+' yet. It trains a skill that your songs will use — give it a go.',go:'exercise',id:st.untried[0],label:'Try it'});
+  if(st.recent!=null&&st.prev!=null){const d=Math.round(st.recent-st.prev);if(d>=3)out.push({text:'Nice work — your accuracy is up about '+d+' points on the previous stretch. Keep the same routine.'});}
+  if(st.strongest&&st.strongest.avg>=85&&st.strongest.n>=3)out.push({text:EXNAMES[st.strongest.id]+' is going really well ('+Math.round(st.strongest.avg)+'%). Levels rise automatically after three strong sessions.'});
+  if(ctx.nextSet&&ctx.nextSet.days!=null&&ctx.nextSet.days>=0&&ctx.nextSet.days<=7)out.push({text:ctx.nextSet.name+' is '+(ctx.nextSet.days===0?'today':'in '+ctx.nextSet.days+' day'+(ctx.nextSet.days===1?'':'s'))+'. Work through the rehearsal plan, including the song transitions.',go:'set',id:ctx.nextSet.id,label:'Open plan'});
+  if(!out.length)out.push({text:'You are in a good rhythm. Keep sessions short and regular — ten to fifteen minutes on most days beats one long session.'});
+  return out.slice(0,4);
+}
+function coachReply(q,ctx){
+  q=(q||'').toLowerCase();const st=coachStats(ctx),p=ctx.profile||{};
+  const lean=st.tend!=null&&Math.abs(st.tend)>20?(' Your recent sessions lean '+(st.tend>0?'sharp':'flat')+', so this applies to you.'):'';
+  const T=[
+   [/hoarse|sore|pain|hurt|strain|lost my voice|scratchy|cough/,()=>({text:'Please be gentle with yourself: if your voice is hoarse, sore or hurts to sing, rest it, sip water, and skip singing for now. Never push through pain. If it lasts more than a couple of weeks, see a doctor or an ear-nose-throat specialist.'})],
+   [/flat|under pitch|below pitch/,()=>({text:'Singing flat is usually low breath energy or a heavy, tired tone. Stand tall, lift the cheeks in a soft smile, keep air flowing, and think the note slightly higher — and listen to the note before you enter.'+lean,go:'exercise',id:'echo',label:'Echo Notes'})],
+   [/sharp|over pitch|above pitch/,()=>({text:'Singing sharp often comes from tension in the jaw, tongue or throat. Drop the jaw, soften the tongue, breathe out, and think “open and down” rather than reaching up for the note.'+lean,go:'exercise',id:'sustain',label:'Steady Notes'})],
+   [/pitch|in tune|off.?key|tone.?deaf|accuracy|accurate/,()=>({text:'Pitch accuracy is a trainable skill. Listen first, then sing; slow the tempo; keep the guide tone on; and practise short phrases rather than whole songs.'+(st.recent!=null?' Your recent accuracy is about '+Math.round(st.recent)+'%.':'')+lean,go:'exercise',id:'echo',label:'Echo Notes'})],
+   [/breath|support|air|run out|out of breath|diaphragm/,()=>({text:'Breathe low and quiet: let your belly and sides expand like a gentle yawn, keep the shoulders down, then release the air steadily instead of pushing. A simple drill: breathe in for 4 counts, hiss out for 8, then try to lengthen the out-breath over days.',go:'exercise',id:'sustain',label:'Steady Notes'})],
+   [/high note|reach higher|top note|higher range|can.?t reach|range up|go higher|falsetto|crack/,()=>({text:'Never force high notes. Move up gradually on a light “oo”, keep the jaw loose, and lower the key if it strains — “Fit my range” in song practice does this for you. Range grows slowly over weeks of comfortable practice.'+(p.hi!=null?' Your comfortable top is about '+midiName(p.hi)+' right now.':''),go:'exercise',id:'arp',label:'Arpeggios'})],
+   [/low note|deeper|go lower|bottom note|too low/,()=>({text:'For low notes, relax and keep the same gentle breath flow — do not push or growl. If a line sits too low, try a higher key or take the Voice 2/3 part that fits your comfortable range.'+(p.lo!=null?' Your comfortable bottom is about '+midiName(p.lo)+' right now.':'')})],
+   [/warm.?up|before singing|before church|before service|prepare my voice/,()=>({text:'A good five-minute warm-up: gentle humming, soft lip trills, easy sirens, then the five-note scales in Gentle Warm-up. Start in the middle of your range and move out slowly.',go:'exercise',id:'warmup',label:'Start warm-up'})],
+   [/harmon|voice 2|voice 3|alto|tenor|bass|second part|third part|backing|choir|backup/,()=>({text:'To hold a harmony part: learn it alone first (choose Voice 2 or 3 in song practice), then hear it with the lead quietly under you, then sing against it. Aim for a calm, steady feeling when the chord locks in. Harmony Hold trains exactly this.',go:'exercise',id:'harmony',label:'Harmony Hold'})],
+   [/transition|segue|flow|next song|key change|modulat|set list|setlist|worship set|between songs/,()=>({text:'Plan each hand-over: hold the last note or play a short bridge on the next key’s V chord, then agree the cue with your band. Closer keys (a step or a fourth/fifth apart) feel smoothest. The Sets tab checks this for you and can rehearse the whole set.',go:'sets',label:'Open Sets'})],
+   [/nerv|anxi|afraid|fear|stage|confiden|shy|embarrass|lead worship|leading/,()=>({text:'Nerves are normal. Breathe low and slow before you start, know your first note and your cues, and rehearse in the real key with the real transitions. Remember worship is not a performance — you are leading others in prayer, and being prepared helps you forget yourself.'})],
+   [/wobble|shaky|steady|vibrato|tremble|waver/,()=>({text:'A wobbling note usually needs steadier airflow and less pressing in the throat. Practise long, calm notes and watch the dots stay level. Natural vibrato settles in once the sound is relaxed and supported.',go:'exercise',id:'sustain',label:'Steady Notes'})],
+   [/timing|entry|come in|enter|rhythm|beat|count|late|early/,()=>({text:'Count the bar silently, breathe in on the beat before your entry, and use the “Enter in …” banner as your cue. Turn on Click if you drift. Sing the first note of the phrase in your head just before you start.'})],
+   [/vowel|diction|word|lyric|pronounc|swahili|language|articulat/,()=>({text:'Sing tall, open vowels and shape the next word during the one before. Swahili helps you here: its five pure vowels (a, e, i, o, u) stay consistent, and keeping them open and unchanged also steadies pitch.'})],
+   [/mic|microphone|not hearing|can.?t hear me|score|inaccurate|wrong|bug|headphone|speaker/,()=>({text:'For the most reliable scoring: use headphones, find a quiet room, sing about a hand-span from the mic, and use a clear “ah”. If the song plays through speakers it leaks into the mic and confuses the score.'})],
+   [/my music|own song|sing along|phone song|my song|mp3|audio file/,()=>({text:'In Songs, choose “Sing to my music”. Pick a recording where the voice or melody is clear, use headphones, and set the section to where the singing happens so intros and solos do not count against you.',go:'tracks',label:'Sing to my music'})],
+   [/how am i|progress|improv|doing|score|result/,()=>({text:st.n?'You have done '+st.n+' session'+(st.n===1?'':'s')+(st.streak?' with a '+st.streak+'-day streak':'')+'. '+(st.recent!=null?'Recent accuracy is about '+Math.round(st.recent)+'%. ':'')+(st.weakest?'Your toughest area is '+EXNAMES[st.weakest.id]+'. ':'')+'Steady, short practice is what moves the number.':'No sessions yet — a gentle warm-up is the best first step.',go:'progress',label:'See progress'})],
+   [/practi[sc]e|plan|routine|schedule|how often|how long|today|focus/,()=>({text:'Aim for 10–15 minutes on most days: 3 minutes warm-up, 5 minutes on one focus exercise, then 5–7 minutes on a song. '+coachInsights(ctx)[0].text,go:'home',label:'Today’s plan'})],
+   [/range|voice type|what am i|soprano|baritone/,()=>({text:p.lo!=null?'Your comfortable range is about '+midiName(p.lo)+' to '+midiName(p.hi)+' (a '+voiceHint(p.lo,p.hi)+' region). That is a hint, not a label — your range grows with relaxed practice.':'I do not know your range yet — the three-minute check will find it.',go:'assess',label:'Check my range'})]
+  ];
+  for(const [re,f] of T)if(re.test(q))return f();
+  return{text:'I can help with pitch (flat or sharp), breathing, high or low notes, warming up, harmonies, song transitions, nerves, steadiness and your practice plan. Try asking about one of those — or tap a suggestion below.',chips:true};
+}
+function speakable(t){
+  return String(t==null?'':t).replace(/\([^)]*Claude could not[^)]*\)\s*/g,'').replace(/\n+/g,'. ').replace(/\u2192/g,' then ').replace(/%/g,' percent')
+   .replace(/\b([A-G])#(\d)/g,'$1 sharp $2').replace(/\b([A-G])b(\d)\b/g,'$1 flat $2').replace(/\u00a2/g,' cents').replace(/\u2026/g,'')
+   .replace(/\s*[\u2014\u2013]\s*/g,', ').replace(/[\u266A\u266B\u2022\u00b7]/g,'').replace(/\s+/g,' ').trim();
+}
+if(typeof module!=='undefined')module.exports={NOTE_NAMES,KEYS,KEY_PC,mtof,ftom,midiName,pcName,centsOff,foldCents,tolFor,median,detectPitch,parseNotation,chordsFor,chordAt,chordToneBelow,buildSong,keyBase,fitShift,songTimeline,chordVoicing,analyzePart,suggestShift,songDifficulty,transitionAdvice,suggestOrder,scoreEvents,summarize,coachFeedback,nextLevel,voiceHint,THEMES,mean,decimateMono,analyzeFrames,framesToNotes,melodyConfidence,estimateKey,melodyRange,coachStats,coachInsights,coachReply,EXNAMES,speakable};
+
+/* ===== APP: state, storage, audio, mic, runner ===== */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LS='vocalcoach.v1';
+const DEFAULT={profile:{name:'',lo:null,hi:null,level:1,lv:{},assessedAt:null,goalDays:4,part:'v1'},settings:{headphones:true,voice:{coach:true,cues:true,rate:1,uri:'',lang:'en-US',convo:false}},songs:[],sets:[],sessions:[],recs:[],tracks:[],coach:{msgs:[],key:'',on:false}};
+const clone=o=>JSON.parse(JSON.stringify(o));
+function loadState(){try{const r=JSON.parse(localStorage.getItem(LS)||'null');if(!r)return clone(DEFAULT);const d=clone(DEFAULT);return{...d,...r,profile:{...d.profile,...(r.profile||{})},settings:{...d.settings,...(r.settings||{})}}}catch(e){return clone(DEFAULT)}}
+let S=loadState();
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){toast('Storage is full — export a backup in Settings')}}
+let toastT=0;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200)}
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);
+const PARTN={v1:'Voice 1 (lead)',v2:'Voice 2',v3:'Voice 3'};
+const rangeOf=()=>S.profile.lo!=null?{lo:S.profile.lo,hi:S.profile.hi}:{lo:55,hi:69};
+const myLevel=id=>(id&&S.profile.lv[id])||S.profile.level||1;
+
+/* --- IndexedDB for recordings (never leaves the device) --- */
+const IDB={db:null,open(){return new Promise((res,rej)=>{if(this.db)return res();const r=indexedDB.open('vocalcoach',1);r.onupgradeneeded=()=>r.result.createObjectStore('recs');r.onsuccess=()=>{this.db=r.result;res()};r.onerror=()=>rej(r.error)})},
+  tx(mode,fn){return this.open().then(()=>new Promise((res,rej)=>{const t=this.db.transaction('recs',mode),st=t.objectStore('recs'),q=fn(st);t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error)}))},
+  put(k,v){return this.tx('readwrite',s=>s.put(v,k))},get(k){return this.tx('readonly',s=>s.get(k))},del(k){return this.tx('readwrite',s=>s.delete(k))},clear(){return this.tx('readwrite',s=>s.clear())}};
+
+/* --- audio --- */
+let AC=null;
+function ac(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}
+function playTone(c,dest,t,d,freq,gain,type){
+  const o=c.createOscillator(),g=c.createGain();o.type=type||'triangle';o.frequency.value=freq;
+  const a=Math.min(0.04,d/3),r=Math.min(0.08,d/3);
+  g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(gain,t+a);g.gain.setValueAtTime(gain,Math.max(t+a,t+d-r));g.gain.linearRampToValueAtTime(0.0001,t+d);
+  o.connect(g);g.connect(dest);o.start(t);o.stop(t+d+0.03);
+}
+function playClick(c,dest,t,strong){playTone(c,dest,t,0.05,strong?1500:1000,strong?0.22:0.14,'sine')}
+
+/* --- microphone + live pitch --- */
+const Mic={stream:null,an:null,buf:null,timer:0,subs:new Set(),hist:[],last:null,src:null,
+  async start(){
+    if(this.stream)return true;const c=ac();
+    try{this.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:!S.settings.headphones,noiseSuppression:false,autoGainControl:false}})}catch(e){this.stream=null;return false}
+    this.src=c.createMediaStreamSource(this.stream);this.an=c.createAnalyser();this.an.fftSize=2048;this.src.connect(this.an);
+    this.buf=new Float32Array(2048);this.hist=[];this.timer=setInterval(()=>this.tick(),1000/FPS);return true;
+  },
+  tick(){
+    if(!this.an)return;this.an.getFloatTimeDomainData(this.buf);
+    const r=detectPitch(this.buf,AC.sampleRate);let midi=null;
+    if(r&&r.clarity>0.85){
+      const raw=ftom(r.freq);
+      if(this.hist.length&&Math.abs(raw-median(this.hist))>1.5)this.hist=[];
+      this.hist.push(raw);if(this.hist.length>5)this.hist.shift();midi=median(this.hist);
+    }else{this.hist.shift()}
+    const f={t:AC.currentTime,midi,level:r?r.rms:0};this.last=f;this.subs.forEach(fn=>fn(f));
+  },
+  stop(){clearInterval(this.timer);this.subs.clear();if(this.stream)this.stream.getTracks().forEach(t=>t.stop());try{this.src&&this.src.disconnect()}catch(e){}this.stream=null;this.an=null;this.last=null}
+};
+
+/* --- runner: schedules guide audio, listens, scores --- */
+const LAT=0.09;
+let RUN=null,LASTRES=null;
+function pitchRange(spec){
+  const ms=spec.events.map(e=>e.midi);if(!ms.length)return{lo:55,hi:69};
+  let lo=Math.floor(Math.min(...ms))-3,hi=Math.ceil(Math.max(...ms))+3;
+  while(hi-lo<14){lo--;hi++}return{lo,hi};
+}
+function targetAt(spec,now){return spec.events.find(e=>e.scored&&now>=e.t-0.25&&now<=e.t+e.d+0.1)}
+async function startRun(spec){
+  const ok=await Mic.start();
+  if(!ok){toast('Microphone access is needed so I can hear you. Allow it in your browser settings.');return}
+  stopRun(true);LASTRES=null;stopSpeech();
+  const c=ac(),gain=c.createGain();gain.gain.value=1;gain.connect(c.destination);
+  RUN={spec,gain,frames:[],allRes:[],passes:0,t0:0,stopping:false,rec:null,chunks:[],started:Date.now(),pr:pitchRange(spec)};
+  if(spec.record&&window.MediaRecorder){
+    try{RUN.rec=new MediaRecorder(Mic.stream);RUN.rec.ondataavailable=e=>{if(e.data&&e.data.size)RUN.chunks.push(e.data)};RUN.rec.start()}catch(e){RUN.rec=null}
+  }
+  RUN.sub=f=>{
+    if(!RUN||RUN.t0===0)return;const now=f.t-RUN.t0-(RUN.spec.lat||LAT);
+    const fr={t:now,midi:f.midi,disp:null,cents:null};
+    if(f.midi!=null){
+      const tg=targetAt(RUN.spec,now);
+      if(tg){const cc=centsOff(f.midi,tg.midi);fr.cents=cc;fr.disp=tg.midi+Math.max(-6,Math.min(6,cc/100))}
+      else{const ctr=(RUN.pr.lo+RUN.pr.hi)/2;fr.disp=f.midi+12*Math.round((ctr-f.midi)/12)}
+    }
+    RUN.frames.push(fr);
+  };
+  Mic.subs.add(RUN.sub);
+  beginPass();
+  RUN.raf=requestAnimationFrame(loop);
+}
+function beginPass(){
+  const c=ac(),r=RUN,spec=r.spec,bs=spec.beatSec||0.6;
+  const n=r.passes===0?(spec.countIn==null?4:spec.countIn):Math.min(2,spec.countIn||0);
+  r.t0=c.currentTime+0.25+n*bs;r.frames=[];r.passes++;r.n=n;
+  for(let i=0;i<n;i++)playClick(c,r.gain,r.t0-(n-i)*bs,i===0);
+  if(spec.audio){const src=c.createBufferSource();src.buffer=spec.audio;src.connect(r.gain);src.start(r.t0,spec.audioOffset||0,spec.dur)}
+  spec.events.forEach(e=>{if(e.audible)playTone(c,r.gain,r.t0+e.t,e.d,mtof(e.midi),e.gain||(e.voice==='v1'||e.voice==='guide'?0.22:0.15),'triangle')});
+  (spec.chords||[]).forEach(ch=>{
+    ch.tones.tones.forEach(m=>playTone(c,r.gain,r.t0+ch.t,ch.d,mtof(m),ch.vol||0.05,'sine'));
+    playTone(c,r.gain,r.t0+ch.t,ch.d,mtof(ch.tones.bass),ch.vol?ch.vol*1.8:0.1,'triangle');
+  });
+  (spec.clicks||[]).forEach(k=>playClick(c,r.gain,r.t0+k.t,k.strong));
+}
+function loop(){
+  if(!RUN)return;const c=AC,now=c.currentTime-RUN.t0;
+  drawRoll(now);updateNow(now);
+  if(!RUN.stopping&&now>RUN.spec.dur+0.35){
+    finishPass(false);
+    if(RUN&&RUN.spec.loop&&!RUN.stopping){try{RUN.gain.disconnect()}catch(e){}const g=c.createGain();g.connect(c.destination);RUN.gain=g;beginPass()}
+    else{finishRun();return}
+  }
+  RUN.raf=requestAnimationFrame(loop);
+}
+function finishPass(partial){
+  const r=RUN,spec=r.spec,nowRel=AC.currentTime-r.t0;
+  let evs=spec.events;if(partial)evs=evs.filter(e=>e.t+e.d<=nowRel);
+  r.allRes.push(...scoreEvents(evs,r.frames,spec.tol));
+}
+function stopRun(silent){
+  if(!RUN)return;const r=RUN;
+  if(!r.stopping){r.stopping=true;cancelAnimationFrame(r.raf);if(!silent&&r.t0&&AC.currentTime>r.t0)finishPass(true)}
+  if(silent){teardownRun();return}
+  finishRun();
+}
+function teardownRun(){
+  if(!RUN)return;const r=RUN;cancelAnimationFrame(r.raf);try{r.gain.disconnect()}catch(e){}
+  Mic.subs.delete(r.sub);if(r.rec&&r.rec.state!=='inactive'){try{r.rec.stop()}catch(e){}}RUN=null;
+}
+async function finishRun(){
+  const r=RUN;if(!r)return;const spec=r.spec;
+  cancelAnimationFrame(r.raf);r.stopping=true;
+  const sum=summarize(r.allRes),secs=Math.round((Date.now()-r.started)/1000);
+  let blob=null;
+  if(r.rec&&r.rec.state!=='inactive'){await new Promise(res=>{r.rec.onstop=res;try{r.rec.stop()}catch(e){res()}});blob=new Blob(r.chunks,{type:r.rec.mimeType||'audio/webm'})}
+  try{r.gain.disconnect()}catch(e){}Mic.subs.delete(r.sub);RUN=null;
+  const ctx={edge:r.allRes.some(x=>!x.missed&&x.inTune<0.5&&(x.ev.midi<rangeOf().lo+1||x.ev.midi>rangeOf().hi-1))};
+  const fb=coachFeedback(sum,ctx);
+  const prior=S.sessions.filter(s=>s.type===spec.kind).slice(-5).map(s=>s.acc);
+  LASTRES={sum,fb,title:spec.title,ref:spec.ref,kind:spec.kind,typical:prior.length>=2?Math.round(mean(prior)):null};
+  if(sum.attempted>0){
+    S.sessions.push({t:Date.now(),type:spec.kind,ref:spec.ref,title:spec.title,acc:sum.accuracy,cov:Math.round(sum.coverage*100),tend:Math.round(sum.tendency),dur:secs,level:spec.level||null});
+    if(S.sessions.length>600)S.sessions.splice(0,S.sessions.length-600);
+    if(spec.kind==='exercise'){
+      const accs=S.sessions.filter(s=>s.ref===spec.ref).map(s=>s.acc),cur=myLevel(spec.ref),nl=nextLevel(cur,accs);
+      if(nl!==cur){S.profile.lv[spec.ref]=nl;toast(nl>cur?'Level up! '+spec.title+' is now level '+nl:'Eased '+spec.title+' to level '+nl+' — no rush.')}
+    }
+    if(blob&&blob.size){
+      const id=uid();try{await IDB.put(id,blob);S.recs.push({id,t:Date.now(),title:spec.title,ref:spec.ref,kind:spec.kind,acc:sum.accuracy,dur:secs,mime:blob.type});
+        while(S.recs.length>40){const o=S.recs.shift();IDB.del(o.id).catch(()=>{})}}catch(e){toast('Could not save the recording')}
+    }
+    save();
+  }
+  if(sum.attempted&&VS().cues)say('Finished. '+sum.accuracy+' percent in tune. '+fb.slice(0,2).join(' '));
+  if(spec.onDone)spec.onDone(sum);
+  render(true);
+}
+
+/* --- piano-roll drawing --- */
+function fitCanvas(cv){const d=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(cv.width!==Math.round(w*d)||cv.height!==Math.round(h*d)){cv.width=Math.round(w*d);cv.height=Math.round(h*d)}return d}
+let VIEWSPEC=null;
+const VCOL={v1:'#f2b84b',v2:'#5b9bff',v3:'#a78bfa',guide:'#5b9bff',you:'#f2b84b'};
+function drawRoll(now){
+  const cv=$('#roll');if(!cv)return;const spec=RUN?RUN.spec:VIEWSPEC;if(!spec)return;
+  const d=fitCanvas(cv),ctx=cv.getContext('2d'),W=cv.clientWidth,H=cv.clientHeight;
+  ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,W,H);
+  const pr=RUN?RUN.pr:pitchRange(spec),ph=H/(pr.hi-pr.lo+1),y=m=>H-(m-pr.lo+0.5)*ph;
+  const px0=W*0.22,pps=W*0.78/6,x=t=>px0+(t-now)*pps;
+  ctx.font='10px system-ui';ctx.textBaseline='middle';
+  for(let m=pr.lo;m<=pr.hi;m++){
+    const pc=mod12(m),nat=[0,2,4,5,7,9,11].includes(pc);
+    if(nat){ctx.strokeStyle=pc===0?'rgba(147,160,184,.35)':'rgba(147,160,184,.13)';ctx.beginPath();ctx.moveTo(0,y(m));ctx.lineTo(W,y(m));ctx.stroke();if(pc===0||pc===7||pc===4){ctx.fillStyle='rgba(147,160,184,.7)';ctx.fillText(midiName(m),4,y(m)-6)}}
+  }
+  const bh=Math.max(5,ph*0.78);
+  spec.events.forEach(e=>{
+    const x0=x(e.t),x1=x(e.t+e.d);if(x1<0||x0>W)return;
+    const past=e.t+e.d<now;ctx.globalAlpha=e.scored?(past?.45:.95):(e.audible?(past?.25:.5):.0);
+    if(!e.scored&&!e.audible){ctx.globalAlpha=past?.1:.22}
+    ctx.fillStyle=VCOL[e.voice]||'#f2b84b';
+    const rw=Math.max(3,x1-x0-2),rx=Math.max(x0,-50);
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x0,y(e.midi)-bh/2,rw,bh,bh/2);else ctx.rect(x0,y(e.midi)-bh/2,rw,bh);ctx.fill();
+  });
+  ctx.globalAlpha=1;
+  if(RUN){
+    const tol=spec.tol;
+    RUN.frames.forEach(f=>{
+      if(f.disp==null||f.t<now-6.5||f.t>now+0.1)return;
+      const a=Math.abs(f.cents==null?0:f.cents);
+      ctx.fillStyle=f.cents==null?'#9fb4d9':a<=tol?'#34c38f':a<=tol*1.8?'#f5b73d':'#f0795a';
+      ctx.beginPath();ctx.arc(x(f.t),y(f.disp),Math.max(2.4,ph*0.26),0,7);ctx.fill();
+    });
+  }
+  ctx.strokeStyle='rgba(255,255,255,.75)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(px0,0);ctx.lineTo(px0,H);ctx.stroke();ctx.lineWidth=1;
+}
+function bannerAt(spec,now){
+  const bs=spec.beatSec||0.6;
+  if(now<0&&RUN&&RUN.n)return 'Get ready … '+Math.max(1,Math.ceil(-now/bs));
+  if(spec.cues&&spec.cues.length){let t='';spec.cues.forEach(c=>{if(c.t<=now)t=c.text});return t}
+  const sc=spec.events.filter(e=>e.scored),cur=sc.find(e=>now>=e.t&&now<e.t+e.d);
+  if(cur)return(cur.d>=2*bs?'Sustain · ':'Sing · ')+midiName(cur.midi);
+  const nx=sc.find(e=>e.t>now);
+  if(!nx)return now>spec.dur?'Finished':'Release gently';
+  const gap=nx.t-now;return gap<=2*bs?'Enter in '+Math.ceil(gap/bs)+' ›':'Rest — listen';
+}
+function updateNow(now){
+  const spec=RUN.spec,b=$('#bn'),bt=bannerAt(spec,now);if(b)b.textContent=bt;
+  if(spec.cues&&spec.kind!=='set'&&bt!==RUN.lastBanner){RUN.lastBanner=bt;if(VS().cues&&S.settings.headphones&&!/^Get ready/.test(bt))say(bt)}
+  const ly=$('#ly');if(ly&&spec.lineMarks){const m=spec.lineMarks.find(l=>now>=l.t-0.05&&now<l.end);ly.textContent=m?m.lyric:''}
+  const f=Mic.last,nn=$('#nn'),nd=$('#nd'),nc=$('#nc');if(!nn)return;
+  if(f&&f.midi!=null&&AC.currentTime-f.t<0.3){
+    const tg=targetAt(spec,now),c=tg?centsOff(f.midi,tg.midi):(f.midi-Math.round(f.midi))*100,cl=Math.max(-50,Math.min(50,c));
+    nn.textContent=midiName(f.midi);nd.style.left=(50+cl)+'%';
+    const a=Math.abs(c);nd.style.background=a<=spec.tol?'#34c38f':a<=spec.tol*1.8?'#f5b73d':'#f0795a';
+    nc.textContent=a<=spec.tol?'in tune':(c<0?'a bit flat':'a bit sharp');
+  }else{nn.textContent='–';nd.style.left='50%';nd.style.background='#93a0b8';nc.textContent='listening'}
+}
+window.addEventListener('resize',()=>{if(!RUN)drawRoll(0)});
+
+/* ===== APP: data, exercises, helpers ===== */
+const BUILTIN=[
+ {id:'b-morning',builtin:1,title:'Morning Praise (demo)',lang:'English',key:'G',bpm:92,meter:4,theme:'Thanksgiving',source:'Original demo — free to use',lines:[
+  {lyric:'Wake, my soul, and sing',v1:'1:1 3:1 5:2 6:1 5:1 3:2'},{lyric:'Thank Him for the morning',v1:'5:1 5:1 6:1 5:1 3:2 2:2'},
+  {lyric:'Every breath, a song of praise',v1:"3:1 3:1 5:1 6:1 1':2 6:1 5:1"},{lyric:'Lift your voice, lift your voice',v1:"1':2 6:1 5:1 3:1 2:1 1:2"}]},
+ {id:'b-bwana',builtin:1,title:'Bwana Ni Mwema (demo)',lang:'Swahili',key:'F',bpm:78,meter:4,theme:'Thanksgiving',source:'Original demo — free to use',lines:[
+  {lyric:'Bwana ni mwema, nitamsifu',v1:'1:1 1:1 3:2 5:1 5:1 3:2'},{lyric:'Rehema zake ni za milele',v1:'3:1 3:1 5:1 6:1 5:2 3:2'},
+  {lyric:'Tunakuabudu, Mfalme wetu',v1:"6:1 6:1 1':2 7:1 6:1 5:2"},{lyric:'Utukufu ni wako milele',v1:'5:1 3:1 5:1 6:1 5:2 1:2'}]},
+ {id:'b-rise',builtin:1,title:'Rise Up (demo)',lang:'English',key:'A',bpm:112,meter:4,theme:'Adoration',source:'Original demo — free to use',lines:[
+  {lyric:'Rise up, rise up, praise the King',v1:"5:1 5:1 6:1 5:1 3:1 5:1 1':2"},{lyric:'Glory to His name',v1:"1':1 7:1 6:1 5:2 3:1 3:2"},
+  {lyric:'All the earth will sing',v1:'3:1 3:1 5:1 6:1 5:2 3:2'},{lyric:'Rise up, rise up, rise up!',v1:"5:1 5:1 6:1 5:1 1':4"}]},
+ {id:'b-waters',builtin:1,title:'Quiet Waters (demo)',lang:'English',key:'D',bpm:66,meter:3,theme:'Intimacy',source:'Original demo — free to use',lines:[
+  {lyric:'Be still, my heart',v1:'3:2 2:1 1:2 5,:1'},{lyric:'Rest in His arms',v1:'1:2 3:1 5:2 3:1'},
+  {lyric:'Peace like a river',v1:'5:2 6:1 5:2 3:1'},{lyric:'Here I am at home',v1:'3:1 2:1 1:2 1:2'}]},
+ {id:'b-holy',builtin:1,title:'Hushed Before You (demo)',lang:'English',key:'E',bpm:60,meter:3,theme:'Reverence',source:'Original demo — free to use',lines:[
+  {lyric:'Holy, holy, holy',v1:'1:2 1:1 3:2 3:1'},{lyric:'We bow before You',v1:'5:2 5:1 3:2 1:1'},
+  {lyric:'Lord of all creation',v1:'6:2 6:1 5:2 3:1'},{lyric:'We stand in awe',v1:'3:1 2:1 1:4'}]}
+];
+const allSongs=()=>[...BUILTIN,...S.songs];
+const songById=id=>allSongs().find(s=>s.id===id);
+const MC=new Map();
+function getModel(song){const k=JSON.stringify([song.meter,song.lines]);const c=MC.get(song.id);if(c&&c.k===k)return c.m;const m=buildSong(song);MC.set(song.id,{k,m});return m}
+const keyName=(key,t)=>KEYS[mod12((KEY_PC[key]||0)+(t||0))];
+const dayKey=ts=>{const d=new Date(ts);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
+function streakDays(){const set=new Set(S.sessions.map(s=>dayKey(s.t)));let n=0,d=new Date();if(!set.has(dayKey(d)))d.setDate(d.getDate()-1);while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1)}return n}
+function weekDays(){const lim=Date.now()-6*864e5;return new Set(S.sessions.filter(s=>s.t>=lim-864e5*0).map(s=>dayKey(s.t))).size}
+function daysUntil(dateStr){if(!dateStr)return null;const a=new Date(dateStr+'T00:00:00'),b=new Date();b.setHours(0,0,0,0);return Math.round((a-b)/864e5)}
+function nextSet(){return S.sets.filter(s=>s.date&&daysUntil(s.date)>=0).sort((a,b)=>a.date.localeCompare(b.date))[0]||null}
+const fmtDate=ds=>{if(!ds)return'';const d=new Date(ds+'T00:00:00');return d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'})}
+
+/* --- exercises --- */
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const INTN={2:'major 2nd',3:'minor 3rd',4:'major 3rd',5:'perfect 4th',7:'perfect 5th',8:'minor 6th',9:'major 6th',10:'minor 7th',11:'major 7th'};
+const ROLE={4:'third',7:'fifth',9:'sixth',12:'octave'};
+const EXS=[
+ {id:'warmup',name:'Gentle Warm-up',icon:'☀',focus:'Warm-up',why:'Five-note scales that wake up the voice gently and settle your pitch for the day.'},
+ {id:'sustain',name:'Steady Notes',icon:'〰',focus:'Steadiness',why:'Hold one note without wobbling. This builds breath control and pitch stability — vital for long worship notes.'},
+ {id:'echo',name:'Echo Notes',icon:'♫',focus:'Ear training',why:'Listen, then sing it back. This trains your ear to find a note before you sing it.'},
+ {id:'arp',name:'Arpeggios',icon:'↗',focus:'Leaps',why:'Jump 1–3–5 and back. Builds accuracy on leaps, which is where most pitch slips happen.'},
+ {id:'intervals',name:'Interval Training',icon:'↔',focus:'Intervals',why:'Hear the gap between two notes and sing it. The foundation for learning harmony parts.'},
+ {id:'harmony',name:'Harmony Hold',icon:'☰',focus:'Harmony',why:'A chord plays and you hold a different note against it — exactly the skill of singing Voice 2 or 3 without sliding to the melody.'}
+];
+function buildExercise(id){
+  const L=myLevel(id),{lo,hi}=rangeOf(),c=Math.round((lo+hi)/2),R=rng(Date.now()&0xffffff),ev=[],cues=[],chs=[];let t=0;
+  const add=(k,d,m,g)=>{ev.push(k==='L'?{t,d,midi:m,voice:'guide',scored:false,audible:true,gain:g}:{t,d,midi:m,voice:'you',scored:true,audible:false});t+=d};
+  const cue=x=>cues.push({t,text:x});
+  const pattern=(pat)=>{
+    const nd=Math.max(0.45,0.85-0.08*L),mx=Math.max(...pat);let roots=[];
+    for(let r=lo+1;r+mx<=hi&&roots.length<3+L;r+=2)roots.push(r);if(!roots.length)roots=[lo];
+    roots.forEach(r=>{
+      if(L<=2){cue('Listen …');pat.forEach(p=>add('L',nd,r+p));t+=0.4}else{cue('Your starting note');add('L',0.9,r);t+=0.3}
+      cue('Your turn — sing it');pat.forEach(p=>add('S',nd,r+p));t+=0.9;
+    });
+  };
+  const ex=EXS.find(e=>e.id===id);
+  if(id==='warmup')pattern([0,2,4,5,7,5,4,2,0]);
+  else if(id==='arp')pattern(hi-lo>=15&&L>=4?[0,4,7,12,7,4,0]:[0,4,7,4,0]);
+  else if(id==='sustain'){
+    const hold=4+L;[0.35,0.55,0.75].map(f=>Math.round(lo+(hi-lo)*f)).forEach(m=>{cue('Listen …');add('L',1.5,m);t+=0.5;cue('Sing it and hold it steady');add('S',hold,m);t+=1.2});
+  }else if(id==='echo'){
+    const k=[1,1,2,3,4][L-1],n=5+L;
+    for(let i=0;i<n;i++){
+      let m=lo+1+Math.floor(R()*Math.max(1,hi-lo-1));const ph=[m];
+      for(let j=1;j<k;j++){m=Math.max(lo,Math.min(hi,m+[-4,-2,-1,2,4][Math.floor(R()*5)]));ph.push(m)}
+      cue('Listen …');ph.forEach(x=>add('L',0.75,x));t+=0.4;cue('Echo it back');ph.forEach(x=>add('S',L<=2?1.2:0.9,x));t+=0.9;
+    }
+  }else if(id==='intervals'){
+    const sets=[[4,7],[4,7,5],[4,7,5,2,9],[4,7,5,2,9,3,8],[4,7,5,2,9,3,8,11,10]][L-1],span=hi-lo;
+    let use=sets.filter(i=>i<=span);if(!use.length)use=[2];
+    for(let i=0;i<5+L;i++){
+      const it=use[Math.floor(R()*use.length)],r=lo+Math.floor(R()*(span-it+1));
+      cue('Listen: the lower note');add('L',1,r);t+=0.2;cue('Sing the lower note');add('S',1.1,r);t+=0.3;
+      cue('Listen: a '+INTN[it]+' higher');add('L',1,r+it);t+=0.2;cue('Now sing the higher note');add('S',1.2,r+it);t+=0.9;
+    }
+  }else if(id==='harmony'){
+    const offs=L===1?[4]:L===2?[4,7]:[4,7,9,12];
+    for(let i=0;i<2+L;i++){
+      const off=offs[i%offs.length],target=Math.max(lo+1,Math.min(hi-1,c+Math.round(R()*4-2)));
+      let rt=target-off;while(rt>57)rt-=12;while(rt<45)rt+=12;
+      cue('Listen to your note …');add('L',1.4,target);t+=0.4;
+      const hold=5+L;cue('The chord plays — hold the '+ROLE[off]);chs.push({t,d:hold,tones:{tones:[rt,rt+7],bass:rt-12},vol:0.07});add('S',hold,target);t+=1;
+    }
+  }
+  return{title:ex.name,kind:'exercise',ref:id,events:ev,cues,chords:chs,clicks:[],lineMarks:null,dur:t,beatSec:0.6,countIn:0,tol:tolFor(L),level:L};
+}
+
+/* --- song practice + set run specs --- */
+let P=null;
+function initP(id,o){
+  o=o||{};const s=songById(id),m=getModel(s);
+  P={id,transpose:o.transpose||0,tempo:1,oct:0,sing:o.sing||S.profile.part||'v1',hear:{v1:false,v2:false,v3:false},accomp:true,click:false,loop:!!o.loop,from:o.from||0,to:o.to==null?m.lines.length-1:o.to,record:false};
+  P.hear[P.sing]=true;
+}
+function practiceSpec(){
+  const s=songById(P.id),m=getModel(s);
+  const tl=songTimeline(m,{key:s.key,transpose:P.transpose,bpm:s.bpm,tempoMul:P.tempo,sing:P.sing,hear:P.hear,range:rangeOf(),oct:P.oct,lineFrom:P.from,lineTo:P.to});
+  return{title:s.title,kind:'song',ref:s.id,events:tl.events,chords:P.accomp?tl.chords:[],clicks:P.click?tl.clicks:[],lineMarks:tl.lineMarks,dur:tl.dur,beatSec:tl.beatSec,countIn:m.bpb,tol:tolFor(S.profile.level),loop:P.loop,record:P.record,level:S.profile.level};
+}
+function itemInfo(it){
+  const s=songById(it.song);if(!s)return null;const m=getModel(s),base=keyBase(s.key,it.transpose||0);
+  return{s,m,base,pc:mod12(base),keyName:keyName(s.key,it.transpose||0),bpm:s.bpm,startPc:mod12(base+m.firstSemi),endPc:mod12(base+m.lastSemi),sing:it.sing||S.profile.part||'v1'};
+}
+function setItems(set){return set.items.map(it=>({it,i:itemInfo(it)})).filter(x=>x.i)}
+function adviceFor(a,b){return transitionAdvice({pc:a.pc,bpm:a.bpm,endPc:a.endPc},{pc:b.pc,bpm:b.bpm,startPc:b.startPc})}
+function setRunSpec(set,from,to){
+  const items=setItems(set).slice(from,to+1),events=[],chords=[],cues=[],lineMarks=[];let off=0,first=null;
+  items.forEach(({it,i},k)=>{
+    const tl=songTimeline(i.m,{key:i.s.key,transpose:it.transpose||0,bpm:i.bpm,tempoMul:1,sing:i.sing,hear:{[i.sing]:true},range:rangeOf()});
+    if(!first)first=tl;
+    tl.events.forEach(e=>events.push({...e,t:e.t+off}));
+    tl.chords.forEach(c=>chords.push({...c,t:c.t+off}));
+    tl.lineMarks.forEach(l=>lineMarks.push({...l,t:l.t+off,end:l.end+off}));
+    cues.push({t:off,text:'▶ '+i.s.title+' · '+i.keyName+' · '+i.bpm+' bpm'});
+    const nx=items[k+1];
+    if(nx){
+      const adv=adviceFor(i,nx.i),nb=60/nx.i.bpm,gap=4*nb;
+      cues.push({t:off+Math.max(0,tl.dur-2*tl.beatSec*i.m.bpb),text:'Coming up: '+nx.i.s.title+' — '+adv.cue});
+      cues.push({t:off+tl.dur,text:'Transition — '+adv.cue});
+      chords.push({t:off+tl.dur,d:gap,tones:chordVoicing(CHORDS[2],keyBase(nx.i.s.key,nx.it.transpose||0)),vol:0.05});
+      off+=tl.dur+gap;
+    }else off+=tl.dur;
+  });
+  return{title:set.name||'Worship set',kind:'set',ref:set.id,events,chords,clicks:[],cues,lineMarks,dur:off,beatSec:first?first.beatSec:0.6,countIn:first?first.bpb:4,tol:tolFor(S.profile.level),level:S.profile.level};
+}
+function servicePlan(set){
+  const items=setItems(set),steps=[],r=rangeOf();
+  steps.push({text:'Warm up your voice (3 minutes)',act:'exercise',id:'warmup'});
+  const ranked=items.map((x,idx)=>{const d=songDifficulty(x.i.m,x.i.s.key,x.it.transpose||0,x.i.sing,r);return{...x,idx,d}}).sort((a,b)=>b.d.score-a.d.score);
+  ranked.forEach(({it,i,d,idx})=>{
+    const bits=[];
+    if(d.outOfRange.length){const nm=[...new Set(d.outOfRange.map(o=>midiName(o.midi)))].slice(0,4).join(', ');bits.push('notes at the edge of your range ('+nm+') — never force them; try another key');}
+    if(d.leaps.length)bits.push('big leaps in line'+(d.leaps.length>1?'s ':' ')+[...new Set(d.leaps.map(l=>l.line+1))].join(', '));
+    if(it.transpose)bits.push('sung in '+i.keyName+' (original '+i.s.key+') — practise it in the new key');
+    const hot=d.outOfRange[0]?d.outOfRange[0].line:d.leaps[0]?d.leaps[0].line:null;
+    steps.push({text:i.s.title+' — '+PARTN[i.sing]+' in '+i.keyName+': '+(bits.length?bits.join('; '):'learn it line by line, then sing it through'),act:'song',id:i.s.id,transpose:it.transpose||0,sing:i.sing,from:hot,to:hot,loop:hot!=null,idx});
+  });
+  for(let k=0;k<items.length-1;k++){const adv=adviceFor(items[k].i,items[k+1].i);steps.push({text:'Transition: '+items[k].i.s.title+' → '+items[k+1].i.s.title+' — '+adv.cue,act:'setrun',id:set.id,from:k,to:k+1})}
+  if(items.length>1)steps.push({text:'Full run-through of the whole set',act:'setrun',id:set.id,from:0,to:items.length-1});
+  else if(items.length===1)steps.push({text:'Sing the song through once from start to finish',act:'song',id:items[0].i.s.id,transpose:items[0].it.transpose||0,sing:items[0].i.sing});
+  const days=daysUntil(set.date);
+  steps.forEach((s,i)=>{s.day=days>0?Math.min(days,Math.floor(i*Math.min(days,steps.length)/steps.length)+1):1});
+  return{steps,days};
+}
+
+/* ===== APP: navigation + views ===== */
+const VIEWS={},AFTER={},A={},IN={},CHG={};
+let V={name:'home',p:{}},STACK=[],PLAN=[],ED=null,AS={step:0},SQ={q:'',lang:'all'},PR={a:null,b:null};
+const TABOF={home:'home',settings:'home',train:'train',exercise:'train',assess:'train',songs:'songs',tracks:'songs',track:'songs',song:'songs',editor:'songs',practice:'songs',sets:'sets',set:'sets',setrun:'sets',progress:'progress',coach:'coach'};
+function go(name,p,replace){stopRun(true);Mic.stop();stopSpeech();stopListen();if(!replace)STACK.push(V);V={name,p:p||{}};LASTRES=null;VIEWSPEC=null;render();window.scrollTo(0,0)}
+function render(keep){
+  const y=window.scrollY;$('#main').innerHTML=VIEWS[V.name](V.p);
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===TABOF[V.name]));
+  if(AFTER[V.name])AFTER[V.name]();if(keep)window.scrollTo(0,y);
+}
+const hdr=(t,back)=>`<div class="hdr">${back===false?'':'<button class="back" data-act="back">‹ Back</button>'}</div><h1>${t}</h1>`;
+const rollBlock=()=>`<canvas id="roll" class="roll"></canvas><div class="banner" id="bn">Ready when you are</div><div class="lyric" id="ly"></div><div class="now"><div class="nn" id="nn">–</div><div class="meter"><i id="nd"></i></div><div class="nc" id="nc">listening</div></div>`;
+const runBtn=l=>`<button class="btn pri big" id="runbtn" data-act="start">${l||'Start'}</button>`;
+function runUI(on){const b=$('#runbtn');if(!b)return;b.textContent=on?'Stop':'Start';b.dataset.act=on?'stop':'start';const c=$('#ctl');if(c){c.style.opacity=on?.45:1;c.style.pointerEvents=on?'none':'auto'}}
+function resultCard(){
+  if(!LASTRES)return'';const r=LASTRES.sum;
+  return`<div class="card fb"><div class="row sp"><h3>How that went</h3>${r.attempted?`<span class="badge ${r.accuracy>=70?'ok':r.accuracy>=50?'wn':'or'}">${r.accuracy}% in tune</span>`:''}</div>
+  ${r.attempted?`<div class="bar mt"><i style="width:${r.accuracy}%"></i></div><p class="mu sm">Heard on ${Math.round(r.coverage*100)}% of notes · ${r.attempted} of ${r.total} notes scored</p>`:''}
+  ${LASTRES.fb.map(f=>`<p>${esc(f)}</p>`).join('')}${r.attempted?'<button class="btn sm mt" data-act="askCoach">Ask the coach about this</button>':''}</div>${gaugeHtml()}`;
+}
+const levelBadge=id=>`<span class="badge">Level ${myLevel(id)}</span>`;
+
+/* --- HOME --- */
+function weakestEx(){
+  const ids=['sustain','echo','arp','intervals','harmony'];
+  const st=ids.map(id=>{const a=S.sessions.filter(s=>s.ref===id).slice(-3).map(s=>s.acc);return{id,n:a.length,avg:a.length?mean(a):0}});
+  return(st.find(s=>s.n===0)||st.sort((a,b)=>a.avg-b.avg)[0]).id;
+}
+function todayPlan(){
+  const p=[{act:'exercise',id:'warmup',why:'Warm up gently — 3 minutes'}];
+  const w=weakestEx(),we=EXS.find(e=>e.id===w);p.push({act:'exercise',id:w,why:'Focus today: '+we.focus.toLowerCase()});
+  const ns=nextSet();let done=false;
+  if(ns){const sp=servicePlan(ns).steps.find(s=>s.act==='song');if(sp){p.push({...sp,why:'For '+ns.name+(ns.date?' ('+fmtDate(ns.date)+')':'')});done=true}}
+  if(!done){const last=[...S.sessions].reverse().find(s=>s.type==='song'&&songById(s.ref));const s=last?songById(last.ref):BUILTIN[0];p.push({act:'song',id:s.id,why:last?'Keep going with your song':'Try a worship song'})}
+  return p;
+}
+function planTitle(st){return st.act==='exercise'?EXS.find(e=>e.id===st.id).name:st.act==='song'?(songById(st.id)||{}).title:'Worship set'}
+VIEWS.home=()=>{
+  PLAN=todayPlan();const ns=nextSet(),nm=S.profile.name?', '+esc(S.profile.name):'',goal=S.profile.goalDays||4;
+  return`<h1>Hello${nm}</h1><p class="mu">Short, patient practice beats long, forced practice.</p>
+  <div class="row mt"><div class="stat"><b>${streakDays()}</b><span class="sm mu">day streak</span></div><div class="stat"><b>${weekDays()}/${goal}</b><span class="sm mu">days this week</span></div><div class="stat"><b>${S.profile.level}</b><span class="sm mu">level</span></div></div>
+  ${S.profile.lo==null?`<div class="card click" data-act="go" data-v="assess"><h3>Find your range →</h3><p class="mu sm">A 3-minute check so every exercise and song fits your voice. Highly recommended first step.</p></div>`:`<div class="card"><p class="sm mu">Your comfortable range</p><b>${midiName(S.profile.lo)} – ${midiName(S.profile.hi)}</b> <span class="badge">${voiceHint(S.profile.lo,S.profile.hi)} range</span></div>`}
+  <h2>Today’s plan</h2>
+  ${PLAN.map((st,i)=>`<div class="card row sp"><div><h3>${esc(planTitle(st))}</h3><p class="mu sm">${esc(st.why)}</p></div><button class="btn pri sm" data-act="planGo" data-i="${i}">Start</button></div>`).join('')}
+  ${ns?`<h2>Next service</h2><div class="card click" data-act="go" data-v="set" data-id="${ns.id}"><h3>${esc(ns.name)}</h3><p class="mu sm">${fmtDate(ns.date)} · ${daysUntil(ns.date)===0?'today':daysUntil(ns.date)+' day(s) to go'} · ${ns.items.length} song(s)</p></div>`:''}
+  <p class="tc mt"><button class="btn sm" data-act="go" data-v="settings">Settings & backup</button></p>`;
+};
+function runStep(st){
+  if(st.act==='exercise')go('exercise',{id:st.id});
+  else if(st.act==='song'){initP(st.id,{transpose:st.transpose,sing:st.sing,from:st.from==null?undefined:st.from,to:st.to==null?undefined:st.to,loop:!!st.loop});go('practice')}
+  else if(st.act==='setrun')go('setrun',{id:st.id,from:st.from,to:st.to});
+}
+A.planGo=d=>runStep(PLAN[+d.i]);
+A.go=d=>{if(d.v==='song'){go('song',{id:d.id})}else if(d.v==='set'){go('set',{id:d.id})}else go(d.v,d.id?{id:d.id}:{})};
+A.back=()=>{stopRun(true);Mic.stop();V=STACK.pop()||{name:'home',p:{}};LASTRES=null;VIEWSPEC=null;render();window.scrollTo(0,0)};
+A.tab=d=>{STACK=[];go(d.t,{},true)};
+
+/* --- TRAIN --- */
+VIEWS.train=()=>`<h1>Train</h1><p class="mu">Each exercise explains why it helps, plays the note for you, then listens.</p>
+ <div class="card click" data-act="go" data-v="assess"><h3>${S.profile.lo==null?'Find your range':'Re-check your range'}</h3><p class="mu sm">${S.profile.lo==null?'Start here — 3 minutes':'Your range: '+midiName(S.profile.lo)+' – '+midiName(S.profile.hi)}</p></div>
+ ${EXS.map(e=>{const last=[...S.sessions].reverse().find(s=>s.ref===e.id);return`<div class="card click" data-act="go" data-v="exercise" data-id="${e.id}"><div class="row sp"><h3>${e.icon} ${e.name}</h3>${levelBadge(e.id)}</div><p class="mu sm">${e.why}</p>${last?`<p class="sm">Last: ${last.acc}% in tune</p>`:''}</div>`}).join('')}`;
+VIEWS.exercise=p=>{
+  const ex=EXS.find(e=>e.id===p.id),spec=buildExercise(p.id);VIEWSPEC=spec;
+  return`${hdr(ex.name)}<p class="mu">${ex.why}</p><p>${levelBadge(p.id)}<span class="badge">±${spec.tol}¢ counts as in tune</span></p>
+  ${S.profile.lo==null?'<div class="hl sm">Tip: do “Find your range” first so these notes sit comfortably for you.</div>':''}
+  ${rollBlock()}${runBtn()}<p class="mu sm tc mt">Headphones recommended. Sing gently — stop if anything feels strained.</p>${resultCard()}`;
+};
+AFTER.exercise=()=>drawRoll(0);
+A.start=async()=>{if(!VIEWSPEC||A._starting)return;primeSpeech();A._starting=1;try{await startRun(VIEWSPEC)}finally{A._starting=0}if(RUN)runUI(true)};
+A.stop=()=>stopRun(false);
+
+/* --- ASSESSMENT --- */
+VIEWS.assess=()=>{
+  const st=AS.step;
+  if(st===0)return`${hdr('Find your range')}<div class="card"><p>I will listen to your lowest and highest comfortable notes, then check your pitch accuracy. It takes about 3 minutes.</p><ul class="sm mu"><li>Find a quiet spot and use headphones if you can.</li><li>Sing a relaxed “ah”. Never push — comfortable notes only.</li><li>Your voice stays on your device.</li></ul></div><button class="btn pri big" data-act="asNext">Begin</button>`;
+  if(st===1||st===2){
+    const low=st===1;
+    return`${hdr('Step '+st+' of 3')}<div class="card"><h3>${low?'Your lowest comfortable note':'Your highest comfortable note'}</h3><p class="mu">${low?'Slide down on a gentle “ah” until it feels like the lowest note you can sing easily. Then hold that note steady for two seconds.':'Slide up on a light “ooh” until it feels like the highest note you can sing easily — no straining. Hold it steady for two seconds.'}</p>
+    <div class="now"><div class="nn" id="capn">–</div><div class="grow"></div></div><p class="mu sm" id="capm">${AS.locked?'':'Press the button, then sing.'}</p></div>
+    ${AS.locked?`<div class="card tc"><b style="font-size:1.6rem">${midiName(AS.locked)}</b><p class="mu sm">Got it.</p></div><div class="row"><button class="btn" data-act="capRetry" style="flex:1">Try again</button><button class="btn pri" data-act="asNext" style="flex:1">Next</button></div>`:`<button class="btn pri big" data-act="capStart">Start listening</button>`}`;
+  }
+  if(st===3){
+    const{lo,hi}=AS,R=rng(Date.now()&0xffffff),ev=[],cues=[];let t=0;
+    for(let i=0;i<6;i++){const m=lo+2+Math.floor(R()*Math.max(1,hi-lo-3));cues.push({t,text:'Listen …'});ev.push({t,d:1,midi:m,voice:'guide',scored:false,audible:true});t+=1.4;cues.push({t,text:'Sing it back'});ev.push({t,d:1.2,midi:m,voice:'you',scored:true,audible:false});t+=2.2}
+    VIEWSPEC={title:'Range & accuracy check',kind:'assessment',ref:'assessment',events:ev,cues,chords:[],clicks:[],lineMarks:null,dur:t,beatSec:0.6,countIn:0,tol:40,level:1,onDone:s=>{AS.acc=s.accuracy;AS.step=4;const lv=s.accuracy<45?1:s.accuracy<60?2:s.accuracy<75?3:4;S.profile.level=lv;S.profile.assessedAt=Date.now();S.profile.lv={};save()}};
+    return`${hdr('Step 3 of 3')}<p class="mu">Six short notes inside your range. Listen, then sing each one back.</p>${rollBlock()}${runBtn('Start')}`;
+  }
+  const lv=S.profile.level;
+  return`<h1>Your starting point</h1><div class="card"><p class="sm mu">Comfortable range</p><b style="font-size:1.4rem">${midiName(S.profile.lo)} – ${midiName(S.profile.hi)}</b><p class="sm mu">That is about ${((S.profile.hi-S.profile.lo)/12).toFixed(1)} octaves, which sits in the <b>${voiceHint(S.profile.lo,S.profile.hi)}</b> region. This is a hint, not a label — your range grows with practice.</p></div>
+  <div class="card"><p class="sm mu">Pitch accuracy</p><b style="font-size:1.4rem">${AS.acc}%</b> <span class="badge">Start at level ${lv}</span><p class="sm mu">Exercises will adjust automatically as you improve — three strong sessions move you up; a tough patch eases you down.</p></div>${resultCard()}
+  <button class="btn pri big" data-act="asDone">Go to training</button>`;
+};
+AFTER.assess=()=>{if(AS.step===3)drawRoll(0)};
+A.asNext=()=>{
+  if(AS.step===0){AS={step:1}}
+  else if(AS.step===1){AS.low=AS.locked;AS.locked=null;AS.step=2}
+  else if(AS.step===2){
+    if(AS.locked<=AS.low+6){toast('Try a higher note — at least a fifth above your low note.');AS.locked=null;render();return}
+    AS.lo=AS.low;AS.hi=AS.locked;AS.locked=null;S.profile.lo=AS.lo;S.profile.hi=AS.hi;save();AS.step=3;
+  }
+  Mic.subs.clear();render();window.scrollTo(0,0);
+};
+A.asDone=()=>{AS={step:0};STACK=[];go('train',{},true)};
+A.capRetry=()=>{AS.locked=null;render()};
+A.capStart=async()=>{
+  if(!(await Mic.start())){toast('Microphone access is needed. Allow it in your browser settings.');return}
+  const h=[];let gap=0,t0=Date.now();$('#capm').textContent='Listening … sing now.';
+  const sub=f=>{
+    const n=$('#capn');
+    if(f.midi==null){gap++;if(gap>6)h.length=0;if(n)n.textContent='–';
+      if(Date.now()-t0>25000){Mic.subs.delete(sub);const m=$('#capm');if(m)m.textContent='I could not hear a steady note. Try singing a little closer to the mic, then press Start again.';const b=document.querySelector('[data-act=capStart]');}return}
+    gap=0;h.push(f.midi);if(n)n.textContent=midiName(f.midi);
+    const need=Math.round(1.4*FPS);
+    if(h.length>=need){const w=h.slice(-need);if(Math.max(...w)-Math.min(...w)<0.7){Mic.subs.delete(sub);AS.locked=Math.round(median(w));render()}}
+  };
+  Mic.subs.add(sub);
+};
+
+/* --- SONGS --- */
+function songListHtml(){
+  const q=SQ.q.trim().toLowerCase();
+  const list=allSongs().filter(s=>(SQ.lang==='all'||s.lang===SQ.lang)&&(!q||(s.title+' '+s.lang+' '+(s.theme||'')+' '+s.lines.map(l=>l.lyric).join(' ')).toLowerCase().includes(q)));
+  if(!list.length)return'<p class="mu tc mt">No songs match. Tap “+ Add song” to enter your own.</p>';
+  return list.map(s=>`<div class="card click" data-act="go" data-v="song" data-id="${s.id}"><h3>${esc(s.title)}</h3><p><span class="badge">${esc(s.lang)}</span><span class="badge">Key ${s.key}</span><span class="badge">${s.bpm} bpm</span><span class="badge">${s.meter}/4</span>${s.theme?`<span class="badge">${esc(s.theme)}</span>`:''}</p></div>`).join('');
+}
+VIEWS.songs=()=>{
+  const langs=[...new Set(allSongs().map(s=>s.lang))];
+  return`<div class="row sp"><h1>Songs</h1><button class="btn pri sm" data-act="newSong">+ Add song</button></div>
+  <div class="card click" data-act="go" data-v="tracks"><h3>\u{1F3A7} Sing to my music</h3><p class="mu sm">Use a song stored on your phone \u2014 I follow its tune and score how closely you match it.</p></div>
+  <input id="sq" placeholder="Search title, words, language…" value="${esc(SQ.q)}" data-in="sq">
+  <div class="mt"><span class="chip ${SQ.lang==='all'?'on':''}" data-act="lang" data-l="all">All</span>${langs.map(l=>`<span class="chip ${SQ.lang===l?'on':''}" data-act="lang" data-l="${esc(l)}">${esc(l)}</span>`).join('')}</div>
+  <div id="songlist">${songListHtml()}</div>
+  <p class="mu sm">Songs here are original demos or ones you add yourself. Only add songs you have the right to use (your own, public domain, or covered by your church’s licence).</p>`;
+};
+IN.sq=v=>{SQ.q=v;$('#songlist').innerHTML=songListHtml()};
+A.lang=d=>{SQ.lang=d.l;render(true)};
+A.newSong=()=>{ED=null;go('editor',{})};
+VIEWS.song=p=>{
+  const s=songById(p.id);if(!s)return hdr('Song not found');
+  const m=getModel(s),d=songDifficulty(m,s.key,0,S.profile.part||'v1',rangeOf());
+  return`${hdr(esc(s.title))}<p><span class="badge">${esc(s.lang)}</span><span class="badge">Key ${s.key}</span><span class="badge">${s.bpm} bpm</span><span class="badge">${s.meter}/4</span>${s.theme?`<span class="badge">${esc(s.theme)}</span>`:''}<span class="badge ${d.level==='Easy'?'ok':d.level==='Moderate'?'wn':'or'}">${d.level} for you</span></p>
+  <p class="mu sm">${esc(s.source||'')}</p>
+  <div class="card">${s.lines.map((l,i)=>`<p><span class="mu sm">${i+1}.</span> ${esc(l.lyric||'(no words)')}</p>`).join('')}</div>
+  <p class="mu sm">Voice 2 and 3 are suggested chord-tone harmonies built under the melody, unless the song has its own parts. Check them with your music director.</p>
+  <button class="btn pri big" data-act="practice" data-id="${s.id}">Practise this song</button>
+  <div class="row mt wrap">${s.builtin?`<button class="btn sm" data-act="dupSong" data-id="${s.id}">Make an editable copy</button>`:`<button class="btn sm" data-act="editSong" data-id="${s.id}">Edit</button><button class="btn sm dn" data-act="delSong" data-id="${s.id}">Delete</button>`}</div>`;
+};
+A.practice=d=>{initP(d.id);go('practice')};
+A.dupSong=d=>{const s=songById(d.id);ED={id:null,title:s.title+' (copy)',lang:s.lang,key:s.key,bpm:s.bpm,meter:s.meter,theme:s.theme||'',text:songToText(s),perm:false};go('editor',{})};
+A.editSong=d=>{const s=songById(d.id);ED={id:s.id,title:s.title,lang:s.lang,key:s.key,bpm:s.bpm,meter:s.meter,theme:s.theme||'',text:songToText(s),perm:true};go('editor',{})};
+A.delSong=d=>{if(!confirm('Delete this song? It will also be removed from any sets.'))return;S.songs=S.songs.filter(s=>s.id!==d.id);S.sets.forEach(x=>x.items=x.items.filter(i=>i.song!==d.id));save();STACK=[];go('songs',{},true)};
+
+/* --- PRACTICE --- */
+VIEWS.practice=()=>{
+  const s=songById(P.id),m=getModel(s),spec=practiceSpec();VIEWSPEC=spec;
+  const kn=keyName(s.key,P.transpose),dif=songDifficulty(m,s.key,P.transpose,P.sing,rangeOf());
+  const opts=m.lines.map((l,i)=>`<option value="${i}">${i+1}. ${esc((l.lyric||'').slice(0,28))}</option>`).join('');
+  return`${hdr(esc(s.title))}<p><span class="badge">Key ${kn}${P.transpose?' (from '+s.key+')':''}</span><span class="badge">${Math.round(s.bpm*P.tempo)} bpm</span><span class="badge ${dif.level==='Easy'?'ok':dif.level==='Moderate'?'wn':'or'}">${dif.level}</span>${dif.outOfRange.length?'<span class="badge or">some notes outside your range</span>':''}</p>
+  ${rollBlock()}${runBtn()}${resultCard()}
+  <div id="ctl"><h2>Your part</h2>${['v1','v2','v3'].map(v=>`<span class="chip ${v} ${P.sing===v?'on':''}" data-act="sing" data-v="${v}">${PARTN[v]}</span>`).join('')}
+  <h2>Hear</h2>${['v1','v2','v3'].map(v=>`<span class="chip ${v} ${P.hear[v]?'on':''}" data-act="hear" data-v="${v}">${v==='v1'?'Voice 1':v==='v2'?'Voice 2':'Voice 3'}</span>`).join('')}<span class="chip ${P.accomp?'on':''}" data-act="tg" data-k="accomp">Accompaniment</span><span class="chip ${P.click?'on':''}" data-act="tg" data-k="click">Click</span>
+  <h2>Key &amp; tempo</h2><div class="row"><button class="btn sm" data-act="tr" data-d="-1">−</button><b>Key ${kn}</b><button class="btn sm" data-act="tr" data-d="1">+</button><button class="btn sm" data-act="fit">Fit my range</button></div>
+  <div class="row mt"><button class="btn sm" data-act="oct" data-d="-1">Octave ↓</button><span class="mu sm">${P.oct>0?'+':''}${P.oct||0}</span><button class="btn sm" data-act="oct" data-d="1">Octave ↑</button></div>
+  <label>Tempo ${Math.round(P.tempo*100)}%</label><input type="range" min="50" max="110" step="5" value="${Math.round(P.tempo*100)}" data-chg="tempo">
+  <h2>Section &amp; practice</h2><div class="row g8"><select data-chg="from">${opts.replace(`value="${P.from}"`,`value="${P.from}" selected`)}</select><span class="mu">to</span><select data-chg="to">${opts.replace(`value="${P.to}"`,`value="${P.to}" selected`)}</select></div>
+  <div class="mt"><span class="chip ${P.loop?'on':''}" data-act="tg" data-k="loop">Loop section</span><span class="chip ${P.record?'on':''}" data-act="tg" data-k="record">Record my voice</span></div>
+  <p class="mu sm">Voice 1 is the lead melody. Watch the banner for when to enter, sustain and stop.</p></div>`;
+};
+AFTER.practice=()=>drawRoll(0);
+A.sing=d=>{P.sing=d.v;P.hear={v1:false,v2:false,v3:false};P.hear[d.v]=true;S.profile.part=d.v;save();render(true)};
+A.hear=d=>{P.hear[d.v]=!P.hear[d.v];render(true)};
+A.tg=d=>{P[d.k]=!P[d.k];render(true)};
+A.tr=d=>{P.transpose=Math.max(-6,Math.min(6,P.transpose+ +d.d));render(true)};
+A.oct=d=>{P.oct=Math.max(-2,Math.min(2,P.oct+ +d.d));render(true)};
+A.fit=()=>{const s=songById(P.id);if(S.profile.lo==null){toast('Do “Find your range” first so I can fit songs to you.');return}P.transpose=suggestShift(getModel(s),s.key,P.sing,rangeOf());P.oct=0;toast(P.transpose?'Moved to '+keyName(s.key,P.transpose)+' to suit your range':'Original key already fits your range');render(true)};
+CHG.tempo=v=>{P.tempo=+v/100;render(true)};
+CHG.from=v=>{P.from=+v;if(P.to<P.from)P.to=P.from;render(true)};
+CHG.to=v=>{P.to=+v;if(P.to<P.from)P.from=P.to;render(true)};
+
+/* --- EDITOR --- */
+function songToText(s){return s.lines.map(l=>[l.lyric||'',l.v1,l.v2||'',l.v3||''].join(' | ').replace(/( \| )+$/,'')).join('\n')}
+function textToLines(txt){
+  const lines=[],errs=[];
+  txt.split('\n').map(x=>x.trim()).filter(Boolean).forEach((row,i)=>{
+    const c=row.split('|').map(x=>x.trim());
+    if(c.length<2||!c[1]){errs.push('Line '+(i+1)+': add the melody after a | divider');return}
+    try{c.slice(1,4).forEach(n=>parseNotation(n))}catch(e){errs.push('Line '+(i+1)+': '+e.message);return}
+    lines.push({lyric:c[0],v1:c[1],v2:c[2]||'',v3:c[3]||''});
+  });
+  if(!lines.length&&!errs.length)errs.push('Add at least one line');
+  return{lines,errs};
+}
+VIEWS.editor=()=>{
+  if(!ED)ED={id:null,title:'',lang:'English',key:'G',bpm:80,meter:4,theme:'',text:"Words of the first line | 1:1 3:1 5:2 3:1 1:2 5,:1\nWords of the second line | 5:1 5:1 6:1 5:1 3:2 1:2",perm:false};
+  return`${hdr(ED.id?'Edit song':'Add a song')}
+  <label>Title</label><input data-in="ed" data-k="title" value="${esc(ED.title)}">
+  <div class="row g8"><div style="flex:1"><label>Language</label><input list="langs" data-in="ed" data-k="lang" value="${esc(ED.lang)}"><datalist id="langs"><option>English</option><option>Swahili</option><option>French</option><option>Kikuyu</option><option>Luganda</option><option>Luo</option></datalist></div>
+  <div style="flex:1"><label>Key (do =)</label><select data-chg="ed" data-k="key">${KEYS.map(k=>`<option ${k===ED.key?'selected':''}>${k}</option>`).join('')}</select></div></div>
+  <div class="row g8"><div style="flex:1"><label>Tempo (bpm)</label><input type="number" min="40" max="200" data-in="ed" data-k="bpm" value="${ED.bpm}"></div>
+  <div style="flex:1"><label>Beats per bar</label><select data-chg="ed" data-k="meter"><option ${ED.meter==3?'selected':''} value="3">3</option><option ${ED.meter==4?'selected':''} value="4">4</option></select></div>
+  <div style="flex:1"><label>Theme</label><select data-chg="ed" data-k="theme"><option value="">—</option>${THEMES.map(t=>`<option ${t===ED.theme?'selected':''}>${t}</option>`).join('')}</select></div></div>
+  <label>One line per phrase:  words | melody | Voice 2 (optional) | Voice 3 (optional)</label>
+  <textarea data-in="ed" data-k="text" spellcheck="false">${esc(ED.text)}</textarea>
+  <div class="hl sm mu"><b>Melody notation</b> (works for numbers or tonic sol-fa): <code>1 2 3 4 5 6 7</code> or <code>d r m f s l t</code> · <code>,</code> lower octave · <code>'</code> higher octave · <code>:2</code> = 2 beats · <code>0</code> = rest · <code>#4</code> sharp · <code>b7</code> flat. Example: <code>s,:1 d:2 m:1 s:2</code>. Leave Voice 2/3 empty and I will suggest harmonies.</div>
+  <label><input type="checkbox" data-chg="ed" data-k="perm" ${ED.perm?'checked':''}> I have permission to use this song (my own, public domain, or licensed)</label>
+  <div class="err" id="edmsg"></div>
+  <div class="row mt"><button class="btn" style="flex:1" data-act="edCheck">Check</button><button class="btn pri" style="flex:1" data-act="edSave">Save</button></div>`;
+};
+IN.ed=(v,el)=>{ED[el.dataset.k]=el.type==='number'?+v:v};
+CHG.ed=(v,el)=>{ED[el.dataset.k]=el.type==='checkbox'?el.checked:(el.dataset.k==='meter'?+v:v)};
+A.edCheck=()=>{const r=textToLines(ED.text),m=$('#edmsg');if(r.errs.length){m.style.color='';m.innerHTML=r.errs.map(esc).join('<br>')}else{const t=r.lines.reduce((a,l)=>a+parseNotation(l.v1).reduce((x,e)=>x+e.beats,0),0);m.style.color='var(--ok)';m.textContent='Looks good — '+r.lines.length+' lines, '+t+' beats.'}};
+A.edSave=()=>{
+  const r=textToLines(ED.text);A.edCheck();if(r.errs.length)return;
+  if(!ED.title.trim()){toast('Please give the song a title');return}
+  if(!ED.perm){toast('Please confirm you have permission to use this song');return}
+  const song={id:ED.id||('c-'+uid()),title:ED.title.trim(),lang:(ED.lang||'English').trim(),key:ED.key,bpm:Math.max(40,Math.min(200,+ED.bpm||80)),meter:ED.meter,theme:ED.theme,source:'Added by you',lines:r.lines};
+  try{buildSong(song)}catch(e){toast(e.message);return}
+  const i=S.songs.findIndex(s=>s.id===song.id);if(i>=0)S.songs[i]=song;else S.songs.push(song);
+  save();ED=null;STACK=[{name:'songs',p:{}}];go('song',{id:song.id},true);toast('Song saved');
+};
+
+/* ===== APP: sing along to songs from your phone ===== */
+const TC={};let TK=null,TP=null;
+const mmss=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
+function gaugeHtml(){
+  if(!LASTRES||LASTRES.kind!=='track'||!LASTRES.sum.attempted)return'';
+  const r=LASTRES.sum,a=r.accuracy,col=v=>v>=70?'var(--ok)':v>=50?'var(--wn)':'var(--or)';
+  const verdict=a>=85?'Excellent match':a>=70?'Good match':a>=50?'Getting there':'Keep practising';
+  const lean=r.tendency>20?'a little sharp':r.tendency<-20?'a little flat':'balanced';
+  const steady=r.wobble<25?'very steady':r.wobble<45?'natural movement':'a bit unsteady';
+  const secs=[...r.lineAcc].sort((x,y)=>x.line-y.line),weak=[...secs].sort((x,y)=>x.acc-y.acc)[0];
+  return`<div class="card"><div class="row sp"><h3>Song gauge</h3><span class="badge ${a>=70?'ok':a>=50?'wn':'or'}">${verdict}</span></div>
+  <div class="row sp sm mt"><span>Match to the original tune</span><b>${a}%</b></div>
+  <div class="row sp sm"><span>Melody you covered</span><b>${Math.round(r.coverage*100)}%</b></div>
+  <div class="row sp sm"><span>Pitch lean</span><b>${lean}</b></div>
+  <div class="row sp sm"><span>Steadiness</span><b>${steady}</b></div>
+  ${LASTRES.typical!=null?`<div class="row sp sm"><span>Your recent average</span><b>${LASTRES.typical}% (${a>=LASTRES.typical?'+':''}${a-LASTRES.typical})</b></div>`:''}
+  ${secs.length>1?`<p class="sm mu mt">Through the song</p>${secs.map(s=>`<div class="row g8 sm"><span style="width:3.2em">${mmss(s.line*10)}</span><div class="bar" style="flex:1"><i style="width:${s.acc}%;background:${col(s.acc)}"></i></div><b style="width:3em;text-align:right">${s.acc}%</b></div>`).join('')}
+  ${weak&&weak.acc<70?`<button class="btn sm mt" data-act="loopWeak" data-l="${weak.line}">Loop the weakest part (${mmss(weak.line*10)})</button>`:''}`:''}
+  <p class="sm mu mt">Scores compare you with the tune I could follow in the recording, ignoring octave. If you sang through speakers, the song leaks into the mic and the score is not reliable.</p></div>`;
+}
+A.loopWeak=d=>{const t=TC[TP.id];if(!t)return;const l=+d.l;TP.from=Math.max(0,l*10-1);TP.to=Math.min(Math.floor(t.meta.dur),l*10+11);TP.loop=true;render(true);window.scrollTo(0,0)};
+
+VIEWS.tracks=()=>`${hdr('Sing to my music')}
+ <p class="mu">Pick a song stored on your phone. I read its tune, then score how closely you match it as you sing along. <b>Use headphones</b> — otherwise I would hear the song instead of you.</p>
+ <button class="btn pri big" data-act="pickTrack">Choose a song from my phone</button>
+ <input type="file" id="trkfile" accept="audio/*" style="display:none">
+ ${TK&&TK.busy?`<div class="card"><p id="trkmsg">${esc(TK.msg)}</p><div class="bar mt"><i id="trkbar" style="width:${TK.pct}%"></i></div></div>`:''}
+ <p class="mu sm mt">Works best when the voice or melody stands out (acoustic, a cappella, or vocal-forward songs). Very busy mixes are harder to follow — I will tell you how clearly I could hear the tune. Files stay on your phone.</p>
+ <h2>My saved tracks</h2>
+ ${S.tracks.length?S.tracks.map(t=>`<div class="card click" data-act="go" data-v="track" data-id="${t.id}"><h3>${esc(t.title)}</h3><p class="mu sm">${mmss(t.dur)} · ${esc(t.key)} · tune clarity ${Math.round(t.conf*100)}%</p></div>`).join(''):'<p class="mu sm">Nothing saved yet — tracks you open are kept here (up to 8).</p>'}`;
+A.pickTrack=()=>$('#trkfile').click();
+function prog(msg,pct){const m=$('#trkmsg'),b=$('#trkbar');if(m)m.textContent=msg;if(b)b.style.width=pct+'%'}
+async function importTrack(file){
+  if(!file)return;
+  if(file.size>30e6){toast('That file is large — please choose one under 30 MB.');return}
+  if(S.tracks.length>=8){toast('You can save up to 8 tracks. Delete one first.');return}
+  TK={busy:true,msg:'Reading the file…',pct:3};render(true);
+  try{
+    const c=ac();let buf;
+    try{buf=await c.decodeAudioData(await file.arrayBuffer())}catch(e){TK=null;render(true);toast('I could not read that file. Try an MP3, M4A or WAV.');return}
+    if(buf.duration>12*60){TK=null;render(true);toast('That song is longer than 12 minutes — please pick a shorter one.');return}
+    prog('Listening for the tune…',8);
+    const chs=[];for(let i=0;i<buf.numberOfChannels;i++)chs.push(buf.getChannelData(i));
+    const f=Math.max(1,Math.round(buf.sampleRate/16000)),mono=decimateMono(chs,f),sr=buf.sampleRate/f;
+    const N=Math.round(0.087*sr),hop=Math.round(0.05*sr),total=Math.floor((mono.length-N)/hop),frames=[];
+    for(let k=0;k<total;k+=120){
+      frames.push(...analyzeFrames(mono,sr,k,Math.min(120,total-k),hop,N));
+      prog('Listening for the tune… '+Math.round(100*k/total)+'%',8+Math.round(82*k/total));
+      await new Promise(r=>setTimeout(r,0));
+    }
+    const notes=framesToNotes(frames,hop/sr),conf=melodyConfidence(frames);
+    if(notes.length<8){TK=null;render(true);toast('I could not follow a clear tune in that recording. A more vocal-forward version may work better.');return}
+    const key=estimateKey(notes),rg=melodyRange(notes),id='t-'+uid();
+    prog('Saving…',95);
+    await IDB.put('trk:'+id,file);await IDB.put('trkn:'+id,notes);
+    const meta={id,title:file.name.replace(/\.[^.]+$/,'').slice(0,60),dur:buf.duration,key:key.name,lo:rg.lo,hi:rg.hi,conf,n:notes.length};
+    S.tracks.push(meta);save();TC[id]={buf,notes,meta};TK=null;go('track',{id});
+  }catch(e){TK=null;render(true);toast('Something went wrong reading that song.')}
+}
+async function loadTrack(id){
+  if(TC[id])return TC[id];
+  const meta=S.tracks.find(t=>t.id===id);if(!meta)return null;
+  try{const blob=await IDB.get('trk:'+id),notes=await IDB.get('trkn:'+id);if(!blob||!notes)return null;
+    const buf=await ac().decodeAudioData(await blob.arrayBuffer());TC[id]={buf,notes,meta};return TC[id]}catch(e){return null}
+}
+function trackSpec(t){
+  const from=TP.from,to=Math.max(from+3,TP.to),lv=S.profile.level;
+  const events=t.notes.filter(n=>n.t+n.d>from&&n.t<to).map(n=>{const t0=Math.max(n.t,from);return{t:t0-from,d:Math.min(n.t+n.d,to)-t0,midi:n.midi,voice:'v1',scored:true,audible:TP.guide,line:Math.floor(n.t/10),gain:0.12}}).filter(e=>e.d>0.1);
+  return{title:t.meta.title,kind:'track',ref:t.meta.id,events,chords:[],clicks:[],lineMarks:null,dur:to-from,beatSec:0.6,countIn:3,tol:tolFor(lv),loop:TP.loop,record:TP.record,level:lv,audio:t.buf,audioOffset:from,lat:0.2};
+}
+VIEWS.track=p=>{
+  const meta=S.tracks.find(t=>t.id===p.id);if(!meta)return hdr('Track not found');
+  const t=TC[p.id];
+  if(!t){
+    loadTrack(p.id).then(r=>{if(V.name==='track'&&V.p.id===p.id){if(!r)document.getElementById('main').innerHTML=hdr(esc(meta.title))+'<p class="mu">The saved audio could not be loaded (it may have been cleared from this device).</p><button class="btn dn" data-act="delTrack" data-id="'+meta.id+'">Remove from list</button>';else render()}});
+    return`${hdr(esc(meta.title))}<p class="mu">Loading…</p>`;
+  }
+  if(!TP||TP.id!==p.id)TP={id:p.id,from:0,to:Math.floor(meta.dur),loop:false,record:false,guide:false};
+  const spec=trackSpec(t);VIEWSPEC=spec;
+  const r=rangeOf(),span=meta.hi-meta.lo,mine=r.hi-r.lo;
+  return`${hdr(esc(meta.title))}<p><span class="badge">key \u2248 ${esc(meta.key)}</span><span class="badge">${mmss(meta.dur)}</span><span class="badge ${meta.conf>=0.5?'ok':meta.conf>=0.3?'wn':'or'}">tune clarity ${Math.round(meta.conf*100)}%</span><span class="badge">tune ${midiName(meta.lo)}–${midiName(meta.hi)}</span></p>
+  ${meta.conf<0.3?'<div class="hl sm">I could only follow the tune faintly in this recording, so scores may be rough. A vocal-forward version scores more reliably.</div>':''}
+  ${span>mine+2?`<div class="hl sm">This tune spans ${span} semitones, wider than your range. Switch octave when you need to — the score ignores octave.</div>`:''}
+  ${rollBlock()}${runBtn('Start')}${resultCard()}
+  <div id="ctl"><h2>Section</h2><label>Start ${mmss(TP.from)}</label><input type="range" min="0" max="${Math.max(0,Math.floor(meta.dur)-3)}" step="1" value="${TP.from}" data-chg="tFrom">
+  <label>End ${mmss(Math.max(TP.from+3,TP.to))}</label><input type="range" min="3" max="${Math.floor(meta.dur)}" step="1" value="${TP.to}" data-chg="tTo">
+  <div class="mt"><span class="chip ${TP.loop?'on':''}" data-act="tpTg" data-k="loop">Loop section</span><span class="chip ${TP.guide?'on':''}" data-act="tpTg" data-k="guide">Guide beeps</span><span class="chip ${TP.record?'on':''}" data-act="tpTg" data-k="record">Record my voice</span></div>
+  <p class="mu sm">Pick the part where the voice sings — skip long intros and solos so they do not count against you. Headphones please.</p>
+  <button class="btn sm dn mt" data-act="delTrack" data-id="${meta.id}">Remove this track</button></div>`;
+};
+AFTER.track=()=>drawRoll(0);
+A.tpTg=d=>{TP[d.k]=!TP[d.k];render(true)};
+CHG.tFrom=v=>{TP.from=+v;if(TP.to<TP.from+3)TP.to=TP.from+3;render(true)};
+CHG.tTo=v=>{TP.to=Math.max(+v,TP.from+3);render(true)};
+A.delTrack=async d=>{if(!confirm('Remove this track from your phone’s saved list?'))return;await IDB.del('trk:'+d.id).catch(()=>{});await IDB.del('trkn:'+d.id).catch(()=>{});S.tracks=S.tracks.filter(t=>t.id!==d.id);delete TC[d.id];TP=null;save();STACK=[];go('tracks',{},true)};
+
+/* ===== APP: coach (on-device guidance + optional Claude) ===== */
+let COACH={busy:false,pending:null,keyDraft:''};
+const QUICK=['How do I stop singing flat?','Breathing tips','Reach higher notes safely','Hold a harmony part','Nerves before leading','What should I practise today?'];
+function coachCtx(){const ns=nextSet();return{profile:S.profile,sessions:S.sessions.slice(-60),now:Date.now(),streak:streakDays(),nextSet:ns?{name:ns.name,days:daysUntil(ns.date),id:ns.id}:null}}
+const coachBtn=a=>`<div><button class="btn sm mt" data-act="coachGo" data-go="${esc(a.go)}" data-id="${esc(a.id||'')}">${esc(a.label||'Open')}</button></div>`;
+const bubble=(m,i)=>`<div class="msg ${m.r}">${esc(m.t).replace(/\n/g,'<br>')}${(m.a||[]).map(coachBtn).join('')}${m.r==='a'&&canSpeak()?`<div><button class="btn sm mt" data-act="sayMsg" data-i="${i}">\uD83D\uDD0A Listen</button></div>`:''}</div>`;
+VIEWS.coach=()=>{
+  const ins=coachInsights(coachCtx()),msgs=S.coach.msgs,ai=S.coach.on&&S.coach.key;
+  return`<h1>Coach</h1><p class="mu">Guidance built from your own practice. ${ai?'<span class="badge ok">Claude connected</span>':''}</p>
+  <div class="card"><h3>Your coach’s notes</h3>${ins.map(i=>`<div class="hl"><p class="sm">${esc(i.text)}</p>${i.go?coachBtn(i):''}</div>`).join('')}</div>
+  <h2>Ask your coach</h2><div id="thread">${msgs.map((m,i)=>bubble(m,i)).join('')}${COACH.busy?'<div class="msg a mu">Thinking…</div>':''}</div>
+  <div class="mt">${QUICK.map(q=>`<span class="chip" data-act="coachAsk" data-q="${esc(q)}">${esc(q)}</span>`).join('')}</div>
+  <div class="row g8"><input id="cq" placeholder="Ask about your voice…" maxlength="300" autocomplete="off">${SR?'<button class="btn sm" id="micbtn" data-act="coachMic" aria-label="Speak to the coach">\uD83C\uDFA4</button>':''}<button class="btn pri sm" data-act="coachSend">Send</button></div>${voicePanel()}
+  ${msgs.length?'<p class="tc mt"><button class="btn sm" data-act="coachClear">Clear chat</button></p>':''}
+  <p class="mu sm">General singing guidance, not medical advice. If singing hurts, rest and see a professional.</p>
+  <details class="card"><summary>Optional: connect Claude for open-ended answers</summary>
+  <p class="mu sm mt">The built-in coach works offline and is free. If you have an Anthropic API key, Claude can answer any question. Only short summary numbers (range, accuracy, recent sessions) are sent — never audio, recordings or your name. The key is kept on this device only and uses your own account. Please use a key with a spending limit.</p>
+  <label>API key</label><input type="password" data-in="cKey" autocomplete="off" placeholder="${S.coach.key?'Key saved on this device':'sk-ant-…'}">
+  <div class="row g8 mt wrap"><button class="btn pri sm" data-act="cKeySave">Save &amp; turn on</button>${S.coach.key?`<button class="btn sm" data-act="cToggle">${S.coach.on?'Turn off':'Turn on'}</button><button class="btn sm dn" data-act="cKeyDel">Remove key</button>`:''}</div></details>`;
+};
+AFTER.coach=()=>{if(COACH.pending){const q=COACH.pending;COACH.pending=null;coachAsk(q)}};
+IN.cKey=v=>{COACH.keyDraft=v.trim()};
+A.cKeySave=()=>{if(!/^sk-/.test(COACH.keyDraft)){toast('That does not look like an API key (it should start with sk-).');return}S.coach.key=COACH.keyDraft;S.coach.on=true;COACH.keyDraft='';save();render(true);toast('Claude connected')};
+A.cToggle=()=>{S.coach.on=!S.coach.on;save();render(true)};
+A.cKeyDel=()=>{S.coach.key='';S.coach.on=false;save();render(true);toast('Key removed from this device')};
+A.coachGo=d=>{const g=d.go;if(g==='home'||g==='progress'||g==='train'||g==='songs'||g==='sets')A.tab({t:g});else if(g==='exercise')go('exercise',{id:d.id});else if(g==='set')go('set',{id:d.id});else go(g,d.id?{id:d.id}:{})};
+A.coachAsk=d=>coachAsk(d.q);
+A.coachSend=()=>{const i=$('#cq');if(i&&i.value.trim()){const q=i.value;i.value='';coachAsk(q)}};
+A.coachClear=()=>{S.coach.msgs=[];save();render(true)};
+A.askCoach=()=>{if(!LASTRES)return;const r=LASTRES.sum,lean=r.tendency>20?' and I was leaning sharp':r.tendency<-20?' and I was leaning flat':'';COACH.pending='My last practice on "'+LASTRES.title+'" came out at '+r.accuracy+'%'+lean+'. What should I focus on next?';A.tab({t:'coach'})};
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='cq'){e.preventDefault();A.coachSend()}});
+function summaryForAI(){
+  const c=coachCtx(),st=coachStats(c),p=S.profile;
+  return JSON.stringify({range:p.lo!=null?midiName(p.lo)+'-'+midiName(p.hi):'unknown',level:p.level,streakDays:c.streak,sessions:st.n,recentAccuracy:st.recent==null?null:Math.round(st.recent),pitchLeanCents:st.tend==null?null:Math.round(st.tend),weakestExercise:st.weakest?EXNAMES[st.weakest.id]:null,daysToNextService:c.nextSet?c.nextSet.days:null,lastSessions:S.sessions.slice(-5).map(s=>({what:s.title,acc:s.acc,type:s.type}))});
+}
+async function askClaude(){
+  const sys='You are a warm, patient vocal coach inside a worship singing app. Answer in under 120 words, plainly and practically. You may name these in-app exercises: Gentle Warm-up, Steady Notes, Echo Notes, Arpeggios, Interval Training, Harmony Hold; plus song practice (Voice 1/2/3, Fit my range), Worship sets, and Sing to my music. Never encourage forcing notes or singing through pain; for pain or lasting hoarseness suggest rest and seeing a doctor. Respect that worship is personal and that worship leaders have the final say on arrangements. You cannot hear the user, only see these summary numbers: '+summaryForAI();
+  let msgs=S.coach.msgs.slice(-8).map(m=>({role:m.r==='u'?'user':'assistant',content:m.t})),clean=[];
+  msgs.forEach(m=>{if(clean.length&&clean[clean.length-1].role===m.role)clean[clean.length-1]=m;else clean.push(m)});
+  while(clean.length&&clean[0].role!=='user')clean.shift();
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':S.coach.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:500,system:sys,messages:clean})});
+  if(res.status===401)throw new Error('the key was rejected');
+  if(!res.ok)throw new Error('error '+res.status);
+  const d=await res.json(),t=(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+  if(!t)throw new Error('empty reply');return t;
+}
+async function coachAsk(q){
+  q=(q||'').trim();if(!q||COACH.busy)return;
+  const msgs=S.coach.msgs;msgs.push({r:'u',t:q});
+  const local=()=>{const r=coachReply(q,coachCtx());return{r:'a',t:r.text,a:r.go?[{go:r.go,id:r.id,label:r.label}]:[]}};
+  if(S.coach.on&&S.coach.key){
+    COACH.busy=true;render(true);
+    try{msgs.push({r:'a',t:await askClaude()})}catch(e){const l=local();l.t='(Claude could not be reached: '+e.message+'. Here is my built-in advice.)\n'+l.t;msgs.push(l)}
+    COACH.busy=false;
+  }else msgs.push(local());
+  while(msgs.length>30)msgs.shift();
+  save();render(true);const i=$('#cq');if(i)i.scrollIntoView({block:'center'});
+  afterReply(msgs[msgs.length-1]);
+}
+
+/* ===== APP: voice (coach speaks, you can speak to it) ===== */
+const VDEF={coach:true,cues:true,rate:1,uri:'',lang:'en-US',convo:false};
+const VS=()=>({...VDEF,...(S.settings.voice||{})});
+const canSpeak=()=>'speechSynthesis' in window&&typeof SpeechSynthesisUtterance!=='undefined';
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let SAYID=0,primed=false,REC=null;
+function voices(){try{return speechSynthesis.getVoices()||[]}catch(e){return[]}}
+function pickVoice(){const vs=voices(),u=VS().uri;return vs.find(v=>v.voiceURI===u)||vs.find(v=>/^en/i.test(v.lang)&&v.default)||vs.find(v=>/^en/i.test(v.lang))||null}
+function say(text,onend){
+  if(!canSpeak()){onend&&onend();return}
+  const t=speakable(text);if(!t){onend&&onend();return}
+  const id=++SAYID;try{speechSynthesis.cancel()}catch(e){}
+  const u=new SpeechSynthesisUtterance(t),v=pickVoice();if(v){u.voice=v;u.lang=v.lang}
+  u.rate=VS().rate;const done=()=>{if(id===SAYID&&onend)onend()};u.onend=done;u.onerror=done;
+  try{speechSynthesis.speak(u)}catch(e){done()}
+}
+function stopSpeech(){SAYID++;if(canSpeak()){try{speechSynthesis.cancel()}catch(e){}}}
+function primeSpeech(){if(!canSpeak()||primed)return;primed=true;try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}}
+const micUI=on=>{const b=$('#micbtn');if(b){b.textContent=on?'■':'🎤';b.classList.toggle('pri',on)}};
+function startListen(){
+  if(!SR){toast('Voice input is not supported in this browser. Try Chrome on Android.');return}
+  if(REC)return;stopSpeech();primeSpeech();
+  const r=new SR();r.lang=VS().lang;r.interimResults=true;r.maxAlternatives=1;r.continuous=false;let finalT='';
+  r.onresult=e=>{let t='';for(let i=e.resultIndex;i<e.results.length;i++){t+=e.results[i][0].transcript;if(e.results[i].isFinal)finalT+=e.results[i][0].transcript}const q=$('#cq');if(q)q.value=finalT||t};
+  r.onerror=e=>{if(e.error==='aborted')return;toast({'not-allowed':'Microphone permission was blocked. Allow it for this site.','service-not-allowed':'Voice input is blocked on this device.','no-speech':'I did not hear anything — try again.','network':'Voice input needs an internet connection.','audio-capture':'No microphone was found.'}[e.error]||'Voice input stopped ('+e.error+').')};
+  r.onend=()=>{REC=null;micUI(false);const q=finalT.trim();if(q){const i=$('#cq');if(i)i.value='';if(V.name==='coach')coachAsk(q)}};
+  REC=r;micUI(true);try{r.start()}catch(e){REC=null;micUI(false)}
+}
+function stopListen(){if(REC){const r=REC;REC=null;try{r.onend=null;r.abort()}catch(e){}micUI(false)}}
+A.coachMic=()=>{if(REC){const r=REC;try{r.stop()}catch(e){}}else startListen()};
+A.sayMsg=d=>{if(canSpeak()&&speechSynthesis.speaking){stopSpeech();return}primeSpeech();const m=S.coach.msgs[+d.i];if(m)say(m.t)};
+function afterReply(m){
+  if(!m||m.r!=='a')return;const v=VS();
+  const next=()=>{if(v.convo&&V.name==='coach'&&!RUN&&!REC)startListen()};
+  if(v.coach&&canSpeak())say(m.t,next);else next();
+}
+function voicePanel(){
+  const v=VS(),vs=voices(),pref=vs.filter(x=>/^(en|sw)/i.test(x.lang)),list=pref.length?pref:vs;
+  const langs=[['en-US','English (US)'],['en-GB','English (UK)'],['en-KE','English (Kenya)'],['sw-KE','Kiswahili (Kenya)'],['sw-TZ','Kiswahili (Tanzania)']];
+  return`<details class="card mt"><summary>Voice settings</summary>
+  <div class="mt"><span class="chip ${v.coach?'on':''}" data-act="vTg" data-k="coach">Read coach replies aloud</span><span class="chip ${v.cues?'on':''}" data-act="vTg" data-k="cues">Spoken feedback &amp; cues</span><span class="chip ${v.convo?'on':''}" data-act="vTg" data-k="convo">Conversation mode</span></div>
+  <p class="mu sm">Conversation mode listens again after each spoken reply. Tap the microphone button to stop. Spoken cues during exercises play only when “I use headphones” is on in Settings, so the voice never leaks into your scoring.</p>
+  ${SR?`<label>I will speak in</label><select data-chg="vLang">${langs.map(l=>`<option value="${l[0]}" ${v.lang===l[0]?'selected':''}>${l[1]}</option>`).join('')}</select>`:'<p class="mu sm">Voice input is not available in this browser (Chrome on Android works best).</p>'}
+  ${canSpeak()?`<label>Coach voice</label><select data-chg="vVoice"><option value="">Phone default</option>${list.map(x=>`<option value="${esc(x.voiceURI)}" ${v.uri===x.voiceURI?'selected':''}>${esc(x.name)} (${esc(x.lang)})</option>`).join('')}</select>
+  <label>Speed ${v.rate.toFixed(1)}×</label><input type="range" min="0.7" max="1.3" step="0.1" value="${v.rate}" data-chg="vRate">
+  <div class="row g8 mt"><button class="btn sm" data-act="vSample">Hear a sample</button><button class="btn sm" data-act="vStop">Stop talking</button></div>`:'<p class="mu sm">This browser cannot speak replies aloud.</p>'}
+  <p class="mu sm mt">Voices come from your phone. Voice input sends your speech to your browser’s speech service (Google, in Chrome) to turn it into text, so it needs internet.</p></details>`;
+}
+function setV(k,val){S.settings.voice={...VS(),[k]:val};save()}
+A.vTg=d=>{setV(d.k,!VS()[d.k]);if(d.k==='coach'&&!VS().coach)stopSpeech();render(true)};
+CHG.vLang=v=>setV('lang',v);
+CHG.vVoice=v=>setV('uri',v);
+CHG.vRate=v=>{setV('rate',+v);render(true)};
+A.vSample=()=>{primeSpeech();say('Hi, I am your vocal coach. Breathe low, stand tall, and let us begin gently.')};
+A.vStop=()=>stopSpeech();
+if(canSpeak()&&speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',()=>{if(V.name==='coach'&&!RUN&&!REC&&document.activeElement.tagName!=='INPUT')render(true)});
+
+/* ===== APP: sets, progress, settings, wiring ===== */
+const setById=id=>S.sets.find(s=>s.id===id);
+VIEWS.sets=()=>`<div class="row sp"><h1>Worship sets</h1><button class="btn pri sm" data-act="newSet">+ New set</button></div>
+ <p class="mu">Plan a service, check key and tempo flow between songs, and get a rehearsal plan.</p>
+ ${S.sets.length?S.sets.map(s=>`<div class="card click" data-act="go" data-v="set" data-id="${s.id}"><h3>${esc(s.name)}</h3><p class="mu sm">${s.date?fmtDate(s.date)+' \u00b7 ':''}${s.theme?esc(s.theme)+' \u00b7 ':''}${s.items.length} song(s)</p></div>`).join(''):'<div class="card tc mu">No sets yet. Create one for your next service.</div>'}`;
+A.newSet=()=>{const s={id:'s-'+uid(),name:'Sunday worship',date:'',theme:'',items:[]};S.sets.push(s);save();go('set',{id:s.id})};
+VIEWS.set=p=>{
+  const set=setById(p.id);if(!set)return hdr('Set not found');
+  const rows=set.items.map((it,idx)=>({it,idx,i:itemInfo(it)})).filter(x=>x.i);
+  let body='';
+  rows.forEach((x,k)=>{
+    const{it,idx,i}=x;
+    body+=`<div class="card"><div class="row sp"><h3>${k+1}. ${esc(i.s.title)}</h3><span class="badge">${i.keyName} \u00b7 ${i.bpm} bpm</span></div>
+    <div class="row wrap g8"><button class="btn sm" data-act="itTr" data-i="${idx}" data-d="-1">Key \u2212</button><button class="btn sm" data-act="itTr" data-i="${idx}" data-d="1">Key +</button><button class="btn sm" data-act="itFit" data-i="${idx}">Fit my range</button>
+    <select style="width:auto" data-chg="itPart" data-i="${idx}">${['v1','v2','v3'].map(v=>`<option value="${v}" ${i.sing===v?'selected':''}>${PARTN[v]}</option>`).join('')}</select></div>
+    <div class="row g8 mt"><button class="btn sm" data-act="itMv" data-i="${idx}" data-d="-1" ${idx===0?'disabled':''}>\u2191</button><button class="btn sm" data-act="itMv" data-i="${idx}" data-d="1" ${idx===set.items.length-1?'disabled':''}>\u2193</button><button class="btn sm dn" data-act="itDel" data-i="${idx}">Remove</button></div></div>`;
+    const nx=rows[k+1];
+    if(nx){const a=adviceFor(i,nx.i);body+=`<div class="tr"><p class="sm"><span class="badge ${a.level==='easy'?'ok':a.level==='medium'?'wn':'or'}">${a.level} transition</span> <b>${esc(a.keyNote)}</b></p><p class="sm mu">${esc(a.tempoNote)}</p><p class="sm">${esc(a.method)}</p></div>`}
+  });
+  const plan=rows.length?servicePlan(set):null;
+  return`${hdr('Set planner')}<label>Name</label><input data-in="setName" data-id="${set.id}" value="${esc(set.name)}">
+  <div class="row g8"><div style="flex:1"><label>Service date</label><input type="date" data-chg="setDate" data-id="${set.id}" value="${set.date||''}"></div><div style="flex:1"><label>Theme</label><select data-chg="setTheme" data-id="${set.id}"><option value="">\u2014</option>${THEMES.map(t=>`<option ${set.theme===t?'selected':''}>${t}</option>`).join('')}</select></div></div>
+  <h2>Songs</h2>${body||'<p class="mu">Add songs below.</p>'}
+  <div class="row g8"><select id="addsong">${allSongs().map(s=>`<option value="${s.id}">${esc(s.title)} (${s.key})</option>`).join('')}</select><button class="btn pri sm" data-act="addToSet" data-id="${set.id}">Add</button></div>
+  ${rows.length>1?`<div class="row g8 mt wrap"><button class="btn sm" data-act="suggest" data-id="${set.id}">Suggest flow${set.theme?' for '+esc(set.theme.toLowerCase()):''}</button><button class="btn pri sm" data-act="runSet" data-id="${set.id}">Rehearse the set</button></div><p class="mu sm">Suggestions are a starting point \u2014 you lead the flow.</p>`:''}
+  ${plan?`<h2>Rehearsal plan</h2>${set.date&&plan.days!=null?`<p class="mu sm">${plan.days>0?plan.days+' day(s) until the service \u2014 steps are spread across them.':plan.days===0?'The service is today.':'This service date has passed.'}</p>`:''}
+  ${plan.steps.map((st,i)=>`<div class="card"><div class="step"><div class="num">${set.date&&plan.days>0?st.day:i+1}</div><div style="flex:1"><p class="sm">${esc(st.text)}</p></div></div><button class="btn sm mt" data-act="planStep" data-id="${set.id}" data-i="${i}">Practise</button></div>`).join('')}`:''}
+  <div class="mt"><button class="btn sm dn" data-act="delSet" data-id="${set.id}">Delete set</button></div>`;
+};
+IN.setName=(v,el)=>{setById(el.dataset.id).name=v;save()};
+CHG.setDate=(v,el)=>{setById(el.dataset.id).date=v;save();render(true)};
+CHG.setTheme=(v,el)=>{setById(el.dataset.id).theme=v;save();render(true)};
+CHG.itPart=(v,el)=>{const s=curSet();s.items[+el.dataset.i].sing=v;save();render(true)};
+const curSet=()=>setById(V.p.id);
+A.addToSet=d=>{const s=setById(d.id),sid=$('#addsong').value;s.items.push({song:sid,transpose:0,sing:S.profile.part||'v1'});save();render(true)};
+A.itTr=d=>{const it=curSet().items[+d.i];it.transpose=Math.max(-6,Math.min(6,(it.transpose||0)+ +d.d));save();render(true)};
+A.itFit=d=>{const it=curSet().items[+d.i],s=songById(it.song);if(S.profile.lo==null){toast('Do \u201cFind your range\u201d first.');return}it.transpose=suggestShift(getModel(s),s.key,it.sing||'v1',rangeOf());save();render(true)};
+A.itMv=d=>{const a=curSet().items,i=+d.i,j=i+ +d.d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];save();render(true)};
+A.itDel=d=>{curSet().items.splice(+d.i,1);save();render(true)};
+A.suggest=d=>{const s=setById(d.id),withInfo=s.items.map(it=>({it,bpm:(itemInfo(it)||{bpm:80}).bpm,theme:(itemInfo(it)||{s:{}}).s.theme}));s.items=suggestOrder(withInfo,s.theme).map(x=>x.it);save();render(true);toast('Reordered: energetic first, settling toward reflective')};
+A.delSet=d=>{if(!confirm('Delete this set?'))return;S.sets=S.sets.filter(s=>s.id!==d.id);save();A.back()};
+A.runSet=d=>go('setrun',{id:d.id,from:0,to:setItems(setById(d.id)).length-1});
+A.planStep=d=>{const st=servicePlan(setById(d.id)).steps[+d.i];runStep(st)};
+VIEWS.setrun=p=>{
+  const set=setById(p.id);if(!set)return hdr('Set not found');
+  const spec=setRunSpec(set,p.from,p.to);VIEWSPEC=spec;
+  const items=setItems(set).slice(p.from,p.to+1);
+  return`${hdr(esc(set.name))}<p class="mu sm">Banner cues tell you when to hold, bridge and enter. Accompaniment plays a short chord bridge between songs.</p>${rollBlock()}${runBtn('Start rehearsal')}${resultCard()}
+  <h2>Order</h2>${items.map((x,k)=>`<p class="sm">${k+1}. <b>${esc(x.i.s.title)}</b> \u00b7 ${x.i.keyName} \u00b7 ${PARTN[x.i.sing]}</p>`).join('')}`;
+};
+AFTER.setrun=()=>drawRoll(0);
+
+/* --- PROGRESS --- */
+const getUrl=async id=>{const b=await IDB.get(id);return b?URL.createObjectURL(b):null};
+VIEWS.progress=()=>{
+  const ss=S.sessions,last=ss.slice(-7).map(s=>s.acc),prev=ss.slice(-14,-7).map(s=>s.acc);
+  const a=last.length?Math.round(mean(last)):null,b=prev.length?Math.round(mean(prev)):null;
+  const best={};ss.forEach(s=>{const k=s.ref+'|'+s.title;if(!best[k]||s.acc>best[k].acc)best[k]=s});
+  const recs=[...S.recs].reverse();
+  const slot=k=>{const r=S.recs.find(x=>x.id===PR[k]);return r?`<div class="hl"><b>${k.toUpperCase()}</b> \u00b7 ${esc(r.title)} \u00b7 ${new Date(r.t).toLocaleDateString()} \u00b7 ${r.acc}%<audio controls data-rec="${r.id}"></audio></div>`:`<div class="hl mu sm">Pick a recording for ${k.toUpperCase()}</div>`};
+  return`<h1>Progress</h1>
+  <div class="row mt"><div class="stat"><b>${ss.length}</b><span class="sm mu">sessions</span></div><div class="stat"><b>${a==null?'\u2013':a+'%'}</b><span class="sm mu">recent accuracy</span></div><div class="stat"><b>${streakDays()}</b><span class="sm mu">day streak</span></div></div>
+  ${a!=null&&b!=null?`<p class="sm ${a>=b?'':'mu'}">${a>b?'Up '+(a-b)+' points on the week before \u2014 well done.':a===b?'Steady compared with last week.':'Slightly lower than last week \u2014 that is normal. Consistency matters most.'}</p>`:''}
+  <h2>Pitch accuracy over time</h2><div class="card"><canvas id="chart" style="width:100%;height:170px;display:block"></canvas>${ss.length<2?'<p class="mu sm tc">Complete a couple of sessions to see your trend.</p>':''}</div>
+  <h2>Personal bests</h2>${Object.values(best).sort((x,y)=>y.acc-x.acc).slice(0,6).map(s=>`<div class="row sp sm"><span>${esc(s.title)}</span><b>${s.acc}%</b></div>`).join('')||'<p class="mu sm">Nothing yet.</p>'}
+  <h2>Recent sessions</h2>${[...ss].reverse().slice(0,8).map(s=>`<div class="row sp sm"><span>${new Date(s.t).toLocaleDateString()} \u00b7 ${esc(s.title)}</span><b>${s.acc}%</b></div>`).join('')||'<p class="mu sm">Nothing yet.</p>'}
+  <h2>My recordings</h2><p class="mu sm">Stored only on this device. Pick one as A and another as B to compare.</p>
+  ${recs.length?recs.map(r=>`<div class="card"><div class="row sp"><div><b class="sm">${esc(r.title)}</b><p class="mu sm">${new Date(r.t).toLocaleString()} \u00b7 ${r.acc}% in tune</p></div></div><div class="row g8 mt wrap"><button class="btn sm" data-act="recA" data-id="${r.id}">A</button><button class="btn sm" data-act="recB" data-id="${r.id}">B</button><button class="btn sm dn" data-act="recDel" data-id="${r.id}">Delete</button></div></div>`).join(''):'<p class="mu sm">Turn on \u201cRecord my voice\u201d in song practice to keep takes.</p>'}
+  ${PR.a||PR.b?`<h2>Compare</h2>${slot('a')}${slot('b')}`:''}`;
+};
+AFTER.progress=()=>{
+  const cv=$('#chart');if(cv){
+    const d=fitCanvas(cv),c=cv.getContext('2d'),W=cv.clientWidth,H=cv.clientHeight;c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,W,H);
+    c.font='10px system-ui';c.fillStyle='#93a0b8';c.strokeStyle='rgba(147,160,184,.2)';
+    [0,50,100].forEach(v=>{const y=H-16-(H-26)*v/100;c.beginPath();c.moveTo(24,y);c.lineTo(W,y);c.stroke();c.fillText(v,2,y+3)});
+    const pts=S.sessions.slice(-30);
+    if(pts.length){const X=i=>24+(W-34)*(pts.length===1?.5:i/(pts.length-1)),Y=v=>H-16-(H-26)*v/100;
+      c.strokeStyle='#f2b84b';c.lineWidth=2;c.beginPath();pts.forEach((s,i)=>i?c.lineTo(X(i),Y(s.acc)):c.moveTo(X(i),Y(s.acc)));c.stroke();c.lineWidth=1;
+      pts.forEach((s,i)=>{c.fillStyle=s.acc>=70?'#34c38f':s.acc>=50?'#f5b73d':'#f0795a';c.beginPath();c.arc(X(i),Y(s.acc),3.5,0,7);c.fill()})}
+  }
+  document.querySelectorAll('audio[data-rec]').forEach(async a=>{const u=await getUrl(a.dataset.rec);if(u)a.src=u});
+};
+A.recA=d=>{PR.a=d.id;render(true)};A.recB=d=>{PR.b=d.id;render(true)};
+A.recDel=async d=>{if(!confirm('Delete this recording?'))return;await IDB.del(d.id).catch(()=>{});S.recs=S.recs.filter(r=>r.id!==d.id);if(PR.a===d.id)PR.a=null;if(PR.b===d.id)PR.b=null;save();render(true)};
+
+/* --- SETTINGS --- */
+let DEFERRED=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();DEFERRED=e});
+VIEWS.settings=()=>`${hdr('Settings')}
+ <label>Your name</label><input data-in="name" value="${esc(S.profile.name)}">
+ <label>Practice days per week (goal)</label><select data-chg="goal">${[1,2,3,4,5,6,7].map(n=>`<option ${S.profile.goalDays==n?'selected':''}>${n}</option>`).join('')}</select>
+ <label>Usual part</label><select data-chg="part">${['v1','v2','v3'].map(v=>`<option value="${v}" ${S.profile.part===v?'selected':''}>${PARTN[v]}</option>`).join('')}</select>
+ <label><input type="checkbox" data-chg="phones" ${S.settings.headphones?'checked':''}> I use headphones (best pitch detection). Untick when using the speaker.</label>
+ <h2>Your data</h2><p class="mu sm">Everything \u2014 including recordings \u2014 stays on this device. Nothing is uploaded.</p>
+ <div class="row wrap g8"><button class="btn sm" data-act="export">Export backup</button><button class="btn sm" data-act="importPick">Import backup</button><button class="btn sm dn" data-act="wipe">Delete all my data</button></div>
+ <input type="file" id="imp" accept="application/json" style="display:none">
+ ${DEFERRED?'<div class="mt"><button class="btn pri sm" data-act="install">Install app</button></div>':'<p class="mu sm mt">To install: open the browser menu and choose \u201cAdd to Home screen\u201d.</p>'}
+ <h2>About</h2><p class="mu sm">A patient vocal coach for worship. It never asks you to force a note \u2014 comfortable singing first.</p>`;
+IN.name=v=>{S.profile.name=v;save()};
+CHG.goal=v=>{S.profile.goalDays=+v;save()};CHG.part=v=>{S.profile.part=v;save()};
+CHG.phones=(v,el)=>{S.settings.headphones=el.checked;save();Mic.stop()};
+A.install=async()=>{if(DEFERRED){DEFERRED.prompt();DEFERRED=null}};
+A.export=()=>{const cp=JSON.parse(JSON.stringify(S));cp.coach={msgs:[],key:'',on:false};const b=new Blob([JSON.stringify(cp)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='vocal-coach-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Backup saved (recordings are not included)')};
+A.importPick=()=>$('#imp').click();
+A.wipe=async()=>{if(!confirm('Delete ALL your data and recordings from this device? This cannot be undone.'))return;localStorage.removeItem(LS);await IDB.clear().catch(()=>{});S=loadState();STACK=[];PR={a:null,b:null};go('home',{},true);toast('All data deleted')};
+
+/* --- wiring --- */
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=A[el.dataset.act];if(f){e.preventDefault();f(el.dataset,el)}});
+document.addEventListener('input',e=>{const el=e.target;if(el.dataset&&el.dataset.in&&IN[el.dataset.in])IN[el.dataset.in](el.value,el)});
+document.addEventListener('change',e=>{
+  const el=e.target;
+  if(el.id==='imp'){const f=el.files[0];if(!f)return;f.text().then(t=>{try{const r=JSON.parse(t);if(!r.profile||!Array.isArray(r.sessions))throw 0;if(!confirm('Replace current data with this backup?'))return;localStorage.setItem(LS,JSON.stringify({...r,recs:[],tracks:[],coach:S.coach}));S=loadState();STACK=[];go('home',{},true);toast('Backup restored')}catch(x){toast('That file is not a valid backup')}});return}
+  if(el.id==='trkfile'){importTrack(el.files[0]);el.value='';return}
+  if(el.dataset&&el.dataset.chg&&CHG[el.dataset.chg])CHG[el.dataset.chg](el.value,el);
+});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+render();
+
+</script></body></html>
