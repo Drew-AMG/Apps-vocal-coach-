@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Install Vocal Coach</title>
+<meta name="theme-color" content="#0e1420">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta property="og:title" content="Vocal Coach">
+<meta property="og:description" content="A patient vocal coach for worship singers. Tap to install.">
+<meta property="og:image" content="icon-512.png">
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0e1420;color:#e8edf6;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:24px}
+.w{max-width:360px;width:100%;text-align:center}
+img{width:128px;height:128px;border-radius:28px;box-shadow:0 10px 40px #0008}
+h1{margin:18px 0 4px;font-size:1.6rem}p{color:#93a0b8;margin:6px 0}
+button,a.b{display:block;width:100%;margin-top:22px;padding:15px;border:0;border-radius:999px;background:#f2b84b;color:#241a00;font:700 1.05rem system-ui;text-decoration:none;cursor:pointer}
+a.o{display:inline-block;margin-top:16px;color:#f2b84b;font-weight:600;text-decoration:none}
+#help{display:none;text-align:left;background:#172033;border:1px solid #2a3750;border-radius:16px;padding:14px;margin-top:16px;font-size:.92rem}
+#help b{color:#e8edf6}#help ol{margin:6px 0 0;padding-left:20px;color:#c3cde0}
+.s{font-size:.8rem;margin-top:22px}
+</style></head>
+<body><div class="w">
+<img src="icon-512.png" alt="Vocal Coach icon">
+<h1>Vocal Coach</h1>
+<p>A patient vocal coach for worship singers.</p>
+<button id="inst">Install</button>
+<div id="help"></div>
+<a class="o" href="index.html" id="open">Open in browser instead</a>
+<p class="s">Free. Your voice and recordings stay on your phone.</p>
+</div>
+<script>
+var dp=null,btn=document.getElementById('inst'),help=document.getElementById('help');
+var ua=navigator.userAgent,ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var inApp=/FBAN|FBAV|Instagram|WhatsApp|Line\/|Snapchat|Twitter|TikTok|MicroMessenger|; wv\)/i.test(ua);
+var standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+if(standalone){location.replace('index.html')}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e});
+window.addEventListener('appinstalled',function(){btn.textContent='Installed ✓';btn.disabled=true;help.style.display='none';document.getElementById('open').textContent='Open the app'});
+function show(h){help.innerHTML=h;help.style.display='block'}
+btn.addEventListener('click',function(){
+  if(dp){dp.prompt();dp.userChoice.finally(function(){dp=null});return}
+  if(ios){show('<b>On iPhone / iPad</b><ol><li>Open this page in <b>Safari</b>.</li><li>Tap the <b>Share</b> button.</li><li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>');return}
+  if(inApp){show('<b>Open in Chrome first</b><ol><li>Tap the <b>⋮</b> or <b>…</b> menu in the corner.</li><li>Choose <b>Open in browser / Chrome</b>.</li><li>Tap <b>Install</b> again.</li></ol>');return}
+  show('<b>Install from the browser menu</b><ol><li>Open this page in <b>Chrome</b>.</li><li>Tap the <b>⋮</b> menu.</li><li>Choose <b>Install app</b> or <b>Add to Home screen</b>.</li></ol><p>If you do not see it yet, wait a few seconds on this page and try again.</p>');
+});
+</script></body></html>
